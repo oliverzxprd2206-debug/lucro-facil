@@ -1,514 +1,195 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#071b13">
-<meta name="description" content="Calcule e acompanhe suas vendas com o Lucro Fácil.">
-
-/* Painel financeiro */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.dashboard-box {
-  background: #071b13;
-  border: 1px solid #294638;
-  border-radius: 13px;
-  padding: 15px;
-  min-width: 0;
-}
-
-.dashboard-box span {
-  display: block;
-  color: #9bb5a5;
-  font-size: 12px;
-  margin-bottom: 8px;
-}
-
-.dashboard-box strong {
-  display: block;
-  color: #54e39a;
-  font-size: clamp(16px, 4vw, 22px);
-  overflow-wrap: anywhere;
-}
-
-.dashboard-note {
-  color: #9bb5a5;
-  font-size: 12px;
-  line-height: 1.6;
-  margin-top: 14px;
-}
-  <title>Lucro Fácil | Controle de vendas</title>
+<meta name="description" content="Lucro Fácil: calcule lucros, cadastre produtos e acompanhe suas vendas.">
+<title>Lucro Fácil | Controle de vendas</title>
 <style>
-:root {
-  --bg:#071b13; --panel:#10271d; --green:#54e39a;
-  --text:#f3faf5; --muted:#9bb5a5; --border:#294638;
-}
-* { box-sizing:border-box; }
-body {
-  margin:0; min-height:100vh; padding:0 0 20px;
-  background:radial-gradient(ellipse at top,#173e2a,var(--bg) 55%);
-  color:var(--text); font-family:system-ui,Arial,sans-serif;
-}
-.container { width:min(100% - 28px,760px); margin:auto; }
-nav { display:flex; align-items:center; gap:10px; padding:20px 0;
-  border-bottom:1px solid #ffffff12; }
-.logo { display:grid; place-items:center; width:42px;height:42px;
-  border-radius:13px;background:var(--green);color:var(--bg);
-  font-size:22px;font-weight:900; }
-.brand {font-size:19px;font-weight:800;}
-.brand span {color:var(--green);}
-.tag {margin-left:auto;color:var(--green);font-size:11px;
-  border:1px solid var(--border);padding:7px 10px;border-radius:30px;}
-.hero {padding:30px 0 22px;}
-.eyebrow {color:var(--green);font-size:12px;letter-spacing:2px;font-weight:800;}
-h1 {font-size:clamp(32px,8vw,46px);line-height:1.1;letter-spacing:-1.5px;margin:12px 0;}
-h1 span {color:var(--green);}
-.hero p,.muted {color:var(--muted);line-height:1.6;}
-.card {background:linear-gradient(145deg,#122b20,#0d2118);
-  border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:18px;}
-.heading {display:flex;align-items:center;gap:12px;margin-bottom:20px;}
-.heading-icon {width:44px;height:44px;display:grid;place-items:center;
-  background:#54e39a18;border-radius:13px;font-size:22px;}
-h2 {font-size:19px;margin:0;}
-.subtitle {font-size:13px;color:var(--muted);margin:5px 0 0;}
-.fields {display:grid;grid-template-columns:1fr 1fr;gap:15px 12px;}
-.full {grid-column:1/-1;}
-label {display:block;font-size:13px;font-weight:650;margin-bottom:8px;}
-input {width:100%;min-width:0;background:#071a12;border:1px solid var(--border);
-  color:white;border-radius:10px;padding:13px 11px;font-size:16px;}
-input:focus {outline:2px solid var(--green);}
-button {font:inherit;cursor:pointer;}
-.primary {width:100%;margin-top:20px;padding:15px;border:0;border-radius:11px;
-  background:var(--green);color:#071b13;font-weight:850;}
-.secondary {padding:10px 12px;border:1px solid var(--border);
-  background:transparent;color:var(--green);border-radius:9px;}
-.danger {color:#ff9b9b;border-color:#774040;}
-.results {display:none;margin-top:20px;padding:16px;background:#091b13;
-  border:1px solid var(--border);border-radius:14px;}
-.profit {font-size:32px;font-weight:850;color:var(--green);overflow-wrap:anywhere;margin:10px 0 18px;}
-.loss {color:#ff8888;}
-.line {display:flex;justify-content:space-between;gap:12px;
-  padding:12px 0;border-top:1px solid #ffffff12;font-size:14px;}
-.line span {color:var(--muted);}
-.line strong {text-align:right;overflow-wrap:anywhere;}
-.notice {font-size:12px;color:var(--muted);line-height:1.6;margin:16px 0 0;}
-.stats {display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0;}
-.stat {background:#071b13;border:1px solid var(--border);border-radius:12px;padding:13px;}
-.stat span {display:block;font-size:12px;color:var(--muted);margin-bottom:7px;}
-.stat strong {font-size:18px;overflow-wrap:anywhere;}
-.history-item {border-top:1px solid var(--border);padding:15px 0;}
-.history-head {display:flex;justify-content:space-between;gap:10px;align-items:start;}
-.history-head strong {overflow-wrap:anywhere;}
-.history-date {font-size:11px;color:var(--muted);margin-top:5px;}
-.history-meta {display:flex;justify-content:space-between;gap:10px;margin:12px 0;font-size:13px;}
-.history-meta span {color:var(--muted);}
-.history-actions {display:flex;justify-content:flex-end;gap:8px;}
-.empty {padding:22px 0;text-align:center;color:var(--muted);font-size:14px;}
-.section-top {display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:8px;}
-footer {text-align:center;color:var(--muted);font-size:12px;padding:12px 0 25px;}
-footer strong {color:var(--green);}
-@media(max-width:380px) {
-  .card {padding:15px;}
-  .tag {font-size:9px;}
-  .fields {gap:13px 9px;}
-  .stat strong {font-size:15px;}
-}
+:root{--bg:#071b13;--panel:#10271d;--panel2:#0b2118;--green:#54e39a;--text:#f3faf5;--muted:#a2b9aa;--border:#294638;--red:#ff8888}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#173e2c 0,#071b13 55%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(100% - 28px,820px);margin:auto;padding:22px 0 42px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 0 20px;border-bottom:1px solid #ffffff17}
+.brand{display:flex;align-items:center;gap:11px;font-size:20px;font-weight:850;letter-spacing:-.5px}
+.brand-mark{display:grid;place-items:center;width:48px;height:48px;border-radius:15px;background:var(--green);color:#082117;font-size:25px;font-weight:950}
+.brand span{color:var(--green)}
+.pill{border:1px solid var(--border);border-radius:999px;padding:9px 12px;color:var(--green);font-size:11px;font-weight:800;letter-spacing:.8px}
+.hero{padding:28px 0 22px}
+.eyebrow{color:var(--green);font-size:12px;font-weight:850;letter-spacing:2px;text-transform:uppercase}
+h1{font-size:clamp(34px,8vw,50px);line-height:1.05;letter-spacing:-1.8px;margin:12px 0}
+h1 span{color:var(--green)}
+.subtitle{color:var(--muted);line-height:1.6;margin:0}
+.card{background:linear-gradient(145deg,#102b20f2,#0b2118f5);border:1px solid var(--border);border-radius:22px;padding:20px;margin:14px 0;box-shadow:0 14px 35px #00000012}
+.card-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.icon{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:#1b4430;color:var(--green);font-size:22px;flex-shrink:0}
+h2{font-size:19px;line-height:1.2;margin:0 0 4px}
+.card-head p{font-size:13px;color:var(--muted);margin:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{min-width:0}
+label{display:block;font-size:12px;color:var(--muted);font-weight:700;margin:0 0 7px}
+input,select{width:100%;min-width:0;border:1px solid var(--border);border-radius:12px;background:#071b13;color:var(--text);padding:13px 12px;outline:none}
+input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px #54e39a18}
+input::placeholder{color:#718c7b}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btn{border:0;border-radius:12px;padding:13px 16px;font-weight:850}
+.btn-primary{background:var(--green);color:#062015;flex:1}
+.btn-secondary{background:#183a29;color:var(--text);border:1px solid var(--border)}
+.btn-danger{background:#3a2020;color:#ffc1c1;border:1px solid #633737}
+.result{margin-top:16px;padding:16px;border-radius:15px;background:#06170f;border:1px solid var(--border)}
+.result-top{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.result small{color:var(--muted)}
+.money{font-size:clamp(25px,6vw,34px);font-weight:900;color:var(--green);overflow-wrap:anywhere}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric{padding:14px;border:1px solid var(--border);background:#071b13a8;border-radius:15px;min-width:0}
+.metric span{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}
+.metric strong{display:block;font-size:clamp(16px,4vw,22px);overflow-wrap:anywhere}
+.metric .positive{color:var(--green)}
+.note{font-size:12px;color:var(--muted);line-height:1.55;margin:14px 0 0}
+.list{display:grid;gap:10px}
+.item{padding:14px;border-radius:14px;background:#071b13;border:1px solid var(--border)}
+.item-top{display:flex;justify-content:space-between;gap:10px;align-items:start}
+.item strong{overflow-wrap:anywhere}
+.item small{display:block;color:var(--muted);font-size:12px;margin-top:4px;line-height:1.5}
+.item-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.item-actions button{font-size:12px;padding:8px 10px;border-radius:9px}
+.empty{border:1px dashed var(--border);border-radius:14px;text-align:center;padding:20px;color:var(--muted);font-size:13px}
+.section-title{margin:25px 0 8px;font-size:12px;letter-spacing:1.6px;color:var(--green);font-weight:850;text-transform:uppercase}
+footer{text-align:center;color:#779483;font-size:12px;padding:20px 5px}
+.hidden{display:none!important}
+@media(min-width:640px){.grid.three{grid-template-columns:repeat(3,1fr)}.hero{padding-top:36px}.card{padding:24px}.metrics{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:380px){.wrap{width:min(100% - 20px,820px)}.card{padding:15px}.pill{font-size:9px}.grid{gap:9px}}
 </style>
 </head>
 <body>
-<div class="container">
-  <nav>
-    <div class="logo">L</div>
-    <div class="brand">lucro<span>fácil</span></div>
-    <div class="tag">CONTROLE DE VENDAS</div>
-  </nav>
-
-  <header class="hero">
-    <div class="eyebrow">◆ GESTÃO INTELIGENTE</div>
-    <h1>Venda melhor.<br><span>Lucre mais.</span></h1>
-    <p>Calcule seus resultados e acompanhe suas vendas em um só lugar.</p>
-  </header>
-
-  <main>
-   
-<section class="card">
-  <div class="heading">
-    <div class="heading-icon">▥</div>
-    <div>
-      <h2>Painel financeiro</h2>
-      <p class="subtitle">Resumo dos seus resultados registrados.</p>
-    </div>
-  </div>
-
-  <div class="dashboard-grid">
-    <div class="dashboard-box">
-      <span>Faturamento total</span>
-      <strong id="painelFaturamento">R$ 0,00</strong>
-    </div>
-    <div class="dashboard-box">
-      <span>Lucro acumulado</span>
-      <strong id="painelLucro">R$ 0,00</strong>
-    </div>
-    <div class="dashboard-box">
-      <span>Vendas registradas</span>
-      <strong id="painelVendas">0</strong>
-    </div>
-    <div class="dashboard-box">
-      <span>Margem acumulada</span>
-      <strong id="painelMargem">—</strong>
-    </div>
-  </div>
-
-  <p class="dashboard-note" id="painelResumo">
-    Salve sua primeira venda para começar.
-  </p>
+<div class="wrap">
+<header>
+  <div class="brand"><div class="brand-mark">L</div><div>lucro<span>fácil</span></div></div>
+  <div class="pill">CONTROLE DE VENDAS</div>
+</header>
+<section class="hero">
+  <div class="eyebrow">◆ Gestão inteligente</div>
+  <h1>Venda melhor.<br><span>Lucre mais.</span></h1>
+  <p class="subtitle">Calcule seus resultados, organize seus produtos e acompanhe suas vendas em um só lugar.</p>
 </section>
-    <section class="card">
-      <div class="heading">
-        <div class="heading-icon">↗</div>
-        <div>
-          <h2>Calculadora de lucro</h2>
-          <p class="subtitle">Informe os dados da sua venda.</p>
-        </div>
-      </div>
 
-      <form id="formulario">
-        <div class="fields">
-          <div class="full">
-            <label for="produto">Nome do produto</label>
-            <input id="produto" maxlength="80" placeholder="Ex.: Camiseta básica">
-          </div>
-          <div>
-            <label for="custo">Custo unitário (R$)</label>
-            <input id="custo" type="number" min="0" step="0.01" placeholder="20,00" required>
-          </div>
-          <div>
-            <label for="venda">Preço de venda (R$)</label>
-            <input id="venda" type="number" min="0" step="0.01" placeholder="40,00" required>
-          </div>
-          <div>
-            <label for="quantidade">Unidades</label>
-            <input id="quantidade" type="number" min="1" step="1" value="1" required>
-          </div>
-          <div>
-            <label for="despesas">Outras despesas (R$)</label>
-            <input id="despesas" type="number" min="0" step="0.01" value="0" required>
-          </div>
-        </div>
-        <button class="primary" type="submit">Calcular meu lucro →</button>
-      </form>
+<section class="card">
+  <div class="card-head"><div class="icon">▦</div><div><h2>Painel financeiro</h2><p>Resumo dos registros salvos neste aparelho.</p></div></div>
+  <div class="metrics">
+    <div class="metric"><span>Faturamento</span><strong id="dashRevenue">R$ 0,00</strong></div>
+    <div class="metric"><span>Custos</span><strong id="dashCosts">R$ 0,00</strong></div>
+    <div class="metric"><span>Lucro acumulado</span><strong class="positive" id="dashProfit">R$ 0,00</strong></div>
+    <div class="metric"><span>Vendas salvas</span><strong id="dashCount">0</strong></div>
+  </div>
+  <p class="note" id="dashNote">Cadastre um produto ou registre sua primeira venda para começar.</p>
+</section>
 
-      <section class="results" id="resultados" aria-live="polite">
-        <div class="muted" id="tituloResultado">Resultado estimado</div>
-        <div class="profit" id="lucro"></div>
-        <div class="line"><span>Faturamento</span><strong id="faturamento"></strong></div>
-        <div class="line"><span>Custos totais</span><strong id="custos"></strong></div>
-        <div class="line"><span>Margem sobre vendas</span><strong id="margem"></strong></div>
-        <button class="primary" id="salvar" type="button">＋ Salvar no histórico</button>
-        <button class="secondary" id="novo" type="button" style="width:100%;margin-top:10px">Novo cálculo</button>
-        <p class="notice" id="mensagem"></p>
-      </section>
+<section class="card">
+  <div class="card-head"><div class="icon">＋</div><div><h2>Cadastro de produtos</h2><p>Salve os produtos para preencher os custos mais rápido.</p></div></div>
+  <div class="grid">
+    <div class="field"><label for="productName">Nome do produto</label><input id="productName" maxlength="60" placeholder="Ex.: Camiseta"></div>
+    <div class="field"><label for="productCost">Custo por unidade (R$)</label><input id="productCost" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+    <div class="field"><label for="productPrice">Preço de venda (R$)</label><input id="productPrice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+  </div>
+  <div class="actions"><button class="btn btn-primary" id="saveProduct">Salvar produto</button></div>
+  <div class="section-title">Seus produtos</div>
+  <div class="list" id="productsList"><div class="empty">Nenhum produto cadastrado ainda.</div></div>
+</section>
 
-      <p class="notice">Os resultados são estimativas baseadas nos valores informados.</p>
-    </section>
+<section class="card">
+  <div class="card-head"><div class="icon">％</div><div><h2>Calculadora de lucro</h2><p>Veja quanto sobra em cada venda.</p></div></div>
+  <div class="grid">
+    <div class="field"><label for="chooseProduct">Usar produto cadastrado (opcional)</label><select id="chooseProduct"><option value="">Digitar valores manualmente</option></select></div>
+    <div class="field"><label for="quantity">Quantidade vendida</label><input id="quantity" type="number" min="1" step="1" value="1" inputmode="numeric"></div>
+    <div class="field"><label for="saleCost">Custo por unidade (R$)</label><input id="saleCost" type="number" min="0" step="0.01" value="0" inputmode="decimal"></div>
+    <div class="field"><label for="salePrice">Preço por unidade (R$)</label><input id="salePrice" type="number" min="0" step="0.01" value="0" inputmode="decimal"></div>
+    <div class="field"><label for="extraCost">Outros custos totais (R$)</label><input id="extraCost" type="number" min="0" step="0.01" value="0" inputmode="decimal" placeholder="Entrega, taxa etc."></div>
+    <div class="field"><label for="saleLabel">Descrição da venda (opcional)</label><input id="saleLabel" maxlength="80" placeholder="Ex.: Pedido de hoje"></div>
+  </div>
+  <div class="result">
+    <div class="result-top"><small>Lucro estimado</small><small id="marginText">Margem: 0%</small></div>
+    <div class="money" id="calcProfit">R$ 0,00</div>
+    <p class="note" id="calcDetails">Faturamento: R$ 0,00 · Custos: R$ 0,00</p>
+  </div>
+  <div class="actions">
+    <button class="btn btn-primary" id="saveSale">Registrar venda</button>
+    <button class="btn btn-secondary" id="clearCalc">Limpar campos</button>
+  </div>
+  <p class="note">Cálculo: faturamento menos custo dos produtos e outros custos informados. Impostos ou taxas não informados não entram na conta.</p>
+</section>
 
-    <section class="card">
-      <div class="heading">
-        <div class="heading-icon">▤</div>
-        <div>
-          <h2>Histórico de vendas</h2>
-          <p class="subtitle">Seus cálculos salvos neste navegador.</p>
-        </div>
-      </div>
-
-      <div class="stats">
-        <div class="stat"><span>Vendas salvas</span><strong id="totalVendas">0</strong></div>
-        <div class="stat"><span>Lucro acumulado</span><strong id="totalLucro">R$ 0,00</strong></div>
-      </div>
-
-      <div class="section-top">
-        <strong>Registros recentes</strong>
-        <button class="secondary danger" id="limparHistorico" type="button">Apagar tudo</button>
-      </div>
-
-      <div id="historico" class="empty">Nenhuma venda salva ainda.</div>
-      <p class="notice">O histórico fica neste aparelho e navegador. Ele não é sincronizado entre dispositivos. Evite limpar os dados do navegador se quiser manter os registros.</p>
-    </section>
-  </main>
-
-  <footer><strong>lucrofácil</strong><br>Mais controle sobre suas vendas.<br>© <span id="ano"></span> Lucro Fácil</footer>
+<section class="card">
+  <div class="card-head"><div class="icon">↻</div><div><h2>Histórico de vendas</h2><p>Consulte ou exclua registros salvos.</p></div></div>
+  <div class="list" id="salesList"><div class="empty">Nenhuma venda registrada ainda.</div></div>
+  <div class="actions"><button class="btn btn-danger" id="clearHistory">Apagar todo o histórico</button></div>
+  <p class="note">Seus dados ficam salvos apenas neste navegador e aparelho. Eles não são sincronizados com outros dispositivos. Evite limpar os dados do navegador sem fazer uma cópia.</p>
+</section>
+<footer>Lucro Fácil · Ferramenta de organização. Os resultados dependem dos valores que você informar.</footer>
 </div>
-
 <script>
-const CHAVE = "lucroFacilHistoricoV1";
 const $ = id => document.getElementById(id);
-let calculoAtual = null;
-let historico = carregarHistorico();
+const money = value => Number(value || 0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const num = id => Math.max(0, Number($(id).value) || 0);
+const safe = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const read = (key, fallback) => { try { const value=JSON.parse(localStorage.getItem(key)); return Array.isArray(value)?value:fallback; } catch { return fallback; } };
+let products = read('lucroFacilProdutosV2',[]);
+let sales = read('lucroFacilVendasV2',[]);
 
-function dinheiro(valor) {
-  return valor.toLocaleString("pt-BR", {
-    style:"currency", currency:"BRL"
-  });
+function saveData(){localStorage.setItem('lucroFacilProdutosV2',JSON.stringify(products));localStorage.setItem('lucroFacilVendasV2',JSON.stringify(sales));}
+function getCalc(){
+ const qty=Math.max(1,Math.floor(num('quantity')));
+ const cost=num('saleCost'), price=num('salePrice'), extra=num('extraCost');
+ const revenue=price*qty, costs=cost*qty+extra, profit=revenue-costs;
+ return {qty,cost,price,extra,revenue,costs,profit,margin:revenue>0?profit/revenue*100:0,label:$('saleLabel').value.trim()};
 }
-
-function carregarHistorico() {
-  try {
-    const dados = JSON.parse(localStorage.getItem(CHAVE) || "[]");
-    if (!Array.isArray(dados)) return [];
-    return dados.filter(item =>
-      item && typeof item.id === "string" &&
-      typeof item.produto === "string" &&
-      Number.isFinite(item.lucro) &&
-      Number.isFinite(item.faturamento) &&
-      Number.isFinite(item.custos) &&
-      Number.isFinite(item.quantidade) &&
-      typeof item.data === "string"
-    );
-  } catch {
-    return [];
-  }
+function updateCalc(){
+ const c=getCalc();
+ $('calcProfit').textContent=money(c.profit);
+ $('calcProfit').style.color=c.profit<0?'var(--red)':'var(--green)';
+ $('marginText').textContent='Margem: '+c.margin.toLocaleString('pt-BR',{maximumFractionDigits:1})+'%';
+ $('calcDetails').textContent='Faturamento: '+money(c.revenue)+' · Custos: '+money(c.costs);
 }
-
-function guardarHistorico() {
-  try {
-    localStorage.setItem(CHAVE, JSON.stringify(historico));
-    return true;
-  } catch {
-    alert("Não foi possível salvar. Verifique o espaço disponível no navegador.");
-    return false;
-  }
+function renderProducts(){
+ $('productsList').innerHTML=products.length?products.map(p=>`<div class="item"><div class="item-top"><div><strong>${safe(p.name)}</strong><small>Custo: ${money(p.cost)} · Venda: ${money(p.price)} · Lucro/un.: ${money(p.price-p.cost)}</small></div></div><div class="item-actions"><button class="btn btn-secondary" data-use="${safe(p.id)}">Usar na calculadora</button><button class="btn btn-danger" data-del-product="${safe(p.id)}">Excluir</button></div></div>`).join(''):'<div class="empty">Nenhum produto cadastrado ainda.</div>';
+ $('chooseProduct').innerHTML='<option value="">Digitar valores manualmente</option>'+products.map(p=>`<option value="${safe(p.id)}">${safe(p.name)}</option>`).join('');
 }
-
-$("ano").textContent = new Date().getFullYear();
-
-$("formulario").addEventListener("submit", event => {
-  event.preventDefault();
-
-  const custo = Number($("custo").value);
-  const venda = Number($("venda").value);
-  const quantidade = Number($("quantidade").value);
-  const despesas = Number($("despesas").value);
-
-  if (
-    $("custo").value === "" || $("venda").value === "" ||
-    $("despesas").value === "" ||
-    !Number.isFinite(custo) || !Number.isFinite(venda) ||
-    !Number.isFinite(despesas) || custo < 0 || venda < 0 ||
-    despesas < 0 || !Number.isSafeInteger(quantidade) ||
-    quantidade < 1
-  ) {
-    alert("Confira os valores preenchidos.");
-    return;
-  }
-
-  const faturamento = venda * quantidade;
-  const custos = custo * quantidade + despesas;
-  const lucro = faturamento - custos;
-
-  if (![faturamento, custos, lucro].every(Number.isFinite)) {
-    alert("Os valores são muito altos. Confira os dados.");
-    return;
-  }
-
-  calculoAtual = {
-    produto: $("produto").value.trim() || "Produto sem nome",
-    custo, venda, quantidade, despesas,
-    faturamento, custos, lucro,
-    margem: faturamento > 0 ? lucro / faturamento * 100 : null
-  };
-
-  $("tituloResultado").textContent = calculoAtual.produto;
-  $("lucro").textContent = (lucro < 0 ? "Prejuízo: " : "Lucro: ") + dinheiro(lucro);
-  $("lucro").classList.toggle("loss", lucro < 0);
-  $("faturamento").textContent = dinheiro(faturamento);
-  $("custos").textContent = dinheiro(custos);
-  $("margem").textContent = calculoAtual.margem === null
-    ? "Não calculável"
-    : calculoAtual.margem.toLocaleString("pt-BR", {
-        maximumFractionDigits:2, minimumFractionDigits:1
-      }) + "%";
-
-  const jaSalvo = historico.some(item =>
-    item.produto === calculoAtual.produto &&
-    item.custo === custo && item.venda === venda &&
-    item.quantidade === quantidade && item.despesas === despesas
-  );
-
-  $("mensagem").textContent = jaSalvo
-    ? "Este cálculo já aparece no histórico. Você pode salvá-lo novamente se for uma nova venda."
-    : "Confira os valores e salve para registrar esta venda.";
-
-  $("salvar").disabled = false;
-  $("salvar").textContent = "＋ Salvar no histórico";
-  $("resultados").style.display = "block";
-  $("resultados").scrollIntoView({behavior:"smooth", block:"nearest"});
-});
-
-$("salvar").addEventListener("click", () => {
-  if (!calculoAtual) return;
-
-  const registro = {
-    ...calculoAtual,
-    id: Date.now().toString() + "-" + Math.random().toString(36).slice(2,8),
-    data: new Date().toISOString()
-  };
-
-  historico.unshift(registro);
-
-  if (!guardarHistorico()) {
-    historico.shift();
-    return;
-  }
-
-  renderizarHistorico();
-  $("mensagem").textContent = "Venda salva no histórico deste navegador.";
-  $("salvar").textContent = "✓ Salvo com sucesso";
-});
-
-$("novo").addEventListener("click", () => {
-  $("formulario").reset();
-  $("resultados").style.display = "none";
-  calculoAtual = null;
-  $("produto").focus();
-});
-
-function renderizarHistorico() {
-  $("totalVendas").textContent = historico.length;renderizarPainel();
-
-  const totalLucro = historico.reduce((soma, item) => soma + item.lucro, 0);
-  $("totalLucro").textContent = dinheiro(totalLucro);
-  $("totalLucro").style.color = totalLucro < 0 ? "#ff8888" : "var(--green)";
-
-  const area = $("historico");
-  area.replaceChildren();
-
-  if (historico.length === 0) {
-    area.className = "empty";
-    area.textContent = "Nenhuma venda salva ainda.";
-    return;
-  }
-
-  area.className = "";
-
-  historico.forEach(item => {
-    const card = document.createElement("article");
-    card.className = "history-item";
-
-    const head = document.createElement("div");
-    head.className = "history-head";
-
-    const info = document.createElement("div");
-    const nome = document.createElement("strong");
-    nome.textContent = item.produto;
-
-    const data = document.createElement("div");
-    data.className = "history-date";
-    const dataObj = new Date(item.data);
-    data.textContent = Number.isNaN(dataObj.getTime())
-      ? "Data indisponível"
-      : dataObj.toLocaleString("pt-BR");
-
-    info.append(nome, data);
-
-    const valor = document.createElement("strong");
-    valor.textContent = dinheiro(item.lucro);
-    valor.style.color = item.lucro < 0 ? "#ff8888" : "var(--green)";
-    head.append(info, valor);
-
-    const meta = document.createElement("div");
-    meta.className = "history-meta";
-
-    const qtd = document.createElement("span");
-    qtd.textContent = item.quantidade + " unidade(s)";
-
-    const fat = document.createElement("span");
-    fat.textContent = "Faturamento: " + dinheiro(item.faturamento);
-    meta.append(qtd, fat);
-
-    const actions = document.createElement("div");
-    actions.className = "history-actions";
-
-    const excluir = document.createElement("button");
-    excluir.className = "secondary danger";
-    excluir.type = "button";
-    excluir.textContent = "Excluir registro";
-    excluir.addEventListener("click", () => {
-      if (!confirm("Deseja excluir este registro?")) return;
-
-      const anterior = historico;
-      historico = historico.filter(reg => reg.id !== item.id);
-
-      if (!guardarHistorico()) {
-        historico = anterior;
-        return;
-      }
-     
-function renderizarPainel() {
-  const faturamento = historico.reduce(
-    (soma, item) => soma + item.faturamento, 0
-  );
-
-  const lucro = historico.reduce(
-    (soma, item) => soma + item.lucro, 0
-  );
-
-  const margem = faturamento > 0
-    ? (lucro / faturamento) * 100
-    : null;
-
-  $("painelFaturamento").textContent = dinheiro(faturamento);
-  $("painelLucro").textContent = dinheiro(lucro);
-  $("painelVendas").textContent = historico.length;
-
-  $("painelMargem").textContent = margem === null
-    ? "—"
-    : margem.toLocaleString("pt-BR", {
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 1
-      }) + "%";
-
-  $("painelLucro").style.color =
-    lucro < 0 ? "#ff8888" : "#54e39a";
-
-  $("painelResumo").textContent = historico.length
-    ? "Resumo de todos os registros salvos neste navegador."
-    : "Salve sua primeira venda para começar.";
-  }
-      renderizarHistorico();
-    });
-
-    actions.append(excluir);
-    card.append(head, meta, actions);
-    area.append(card);
-  });
+function renderSales(){
+ $('salesList').innerHTML=sales.length?sales.slice().reverse().map(s=>`<div class="item"><div class="item-top"><div><strong>${safe(s.label||'Venda')}</strong><small>${safe(s.date)} · ${s.qty} unidade(s)<br>Faturamento: ${money(s.revenue)} · Custos: ${money(s.costs)}</small></div><strong style="color:${s.profit<0?'var(--red)':'var(--green)'}">${money(s.profit)}</strong></div><div class="item-actions"><button class="btn btn-danger" data-del-sale="${safe(s.id)}">Excluir registro</button></div></div>`).join(''):'<div class="empty">Nenhuma venda registrada ainda.</div>';
 }
-
-$("limparHistorico").addEventListener("click", () => {
-  if (!historico.length) {
-    alert("O histórico já está vazio.");
-    return;
-  }
-
-  if (!confirm("Apagar todo o histórico deste navegador? Essa ação não pode ser desfeita.")) return;
-
-  const anterior = historico;
-  historico = [];
-
-  if (!guardarHistorico()) {
-    historico = anterior;
-    return;
-  }
-
-  renderizarHistorico();
+function renderDashboard(){
+ const revenue=sales.reduce((a,s)=>a+s.revenue,0), costs=sales.reduce((a,s)=>a+s.costs,0), profit=sales.reduce((a,s)=>a+s.profit,0);
+ $('dashRevenue').textContent=money(revenue);$('dashCosts').textContent=money(costs);$('dashProfit').textContent=money(profit);$('dashProfit').style.color=profit<0?'var(--red)':'var(--green)';$('dashCount').textContent=sales.length;
+ $('dashNote').textContent=sales.length?'Margem acumulada: '+(revenue>0?(profit/revenue*100).toLocaleString('pt-BR',{maximumFractionDigits:1})+'%':'—')+'. Resumo dos registros salvos neste aparelho.':'Cadastre um produto ou registre sua primeira venda para começar.';
+}
+function render(){renderProducts();renderSales();renderDashboard();updateCalc();}
+$('saveProduct').addEventListener('click',()=>{
+ const name=$('productName').value.trim(), cost=num('productCost'), price=num('productPrice');
+ if(!name){alert('Digite o nome do produto.');return;}
+ if(!$('productCost').value.trim()||!$('productPrice').value.trim()){alert('Preencha o custo e o preço de venda.');return;}
+ products.push({id:String(Date.now())+Math.random().toString(16).slice(2),name,cost,price});
+ $('productName').value='';$('productCost').value='';$('productPrice').value='';saveData();render();
 });
-
-renderizarHistorico();
+$('productsList').addEventListener('click',e=>{
+ const use=e.target.closest('[data-use]'), del=e.target.closest('[data-del-product]');
+ if(use){const p=products.find(p=>p.id===use.dataset.use);if(p){$('chooseProduct').value=p.id;$('saleCost').value=p.cost;$('salePrice').value=p.price;updateCalc();$('chooseProduct').scrollIntoView({behavior:'smooth',block:'center'});}}
+ if(del){if(confirm('Excluir este produto do cadastro?')){products=products.filter(p=>p.id!==del.dataset.delProduct);saveData();render();}}
+});
+$('chooseProduct').addEventListener('change',()=>{const p=products.find(p=>p.id===$('chooseProduct').value);if(p){$('saleCost').value=p.cost;$('salePrice').value=p.price;}updateCalc();});
+['quantity','saleCost','salePrice','extraCost','saleLabel'].forEach(id=>$(id).addEventListener('input',updateCalc));
+$('saveSale').addEventListener('click',()=>{
+ const c=getCalc();
+ if(!$('salePrice').value.trim()){alert('Informe o preço de venda.');return;}
+ if(c.revenue<=0){alert('O faturamento precisa ser maior que zero.');return;}
+ sales.push({...c,id:String(Date.now())+Math.random().toString(16).slice(2),date:new Date().toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})});
+ saveData();render();$('saleLabel').value='';alert('Venda registrada!');
+});
+$('clearCalc').addEventListener('click',()=>{$('chooseProduct').value='';$('quantity').value='1';$('saleCost').value='0';$('salePrice').value='0';$('extraCost').value='0';$('saleLabel').value='';updateCalc();});
+$('salesList').addEventListener('click',e=>{const del=e.target.closest('[data-del-sale]');if(del&&confirm('Excluir esta venda do histórico?')){sales=sales.filter(s=>s.id!==del.dataset.delSale);saveData();render();}});
+$('clearHistory').addEventListener('click',()=>{if(sales.length&&confirm('Apagar todas as vendas registradas? Esta ação não pode ser desfeita.')){sales=[];saveData();render();}});
+render();
 </script>
 </body>
 </html>
