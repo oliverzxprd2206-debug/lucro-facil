@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lucro Fácil | Calculadora de Lucro</title>
+  <meta name="description" content="Calcule o lucro, os custos e a margem de suas vendas gratuitamente com o Lucro Fácil.">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px 16px;
+      font-family: Arial, sans-serif;
+      background: #f3f7f4;
+      color: #17251c;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin: 20px 0 28px;
+    }
+
+    header h1 {
+      color: #13864b;
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #607066;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 6px 25px #183d2510;
+      border: 1px solid #e3ece5;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 16px 0 7px;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #d5dfd7;
+      border-radius: 10px;
+      font-size: 16px;
+      background: #fff;
+    }
+
+    input:focus {
+      outline: 2px solid #78c99b;
+      border-color: #13864b;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 15px;
+      background: #13864b;
+      color: white;
+      border: 0;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0d6d3b;
+    }
+
+    .results {
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 12px;
+      background: #edf8f0;
+      display: none;
+    }
+
+    .result-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 12px 0;
+    }
+
+    .profit {
+      font-size: 25px;
+      font-weight: bold;
+      color: #13864b;
+    }
+
+    .note {
+      font-size: 12px;
+      color: #647168;
+      line-height: 1.5;
+      margin-top: 18px;
+    }
+
+    footer {
+      text-align: center;
+      color: #718076;
+      font-size: 12px;
+      margin: 24px 0;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>Lucro Fácil</h1>
+      <p>Descubra quanto você ganha em cada venda.</p>
+    </header>
+
+    <section class="card">
+      <h2>Calculadora de lucro</h2>
+      <p>Preencha os dados do seu produto.</p>
+
+      <label for="produto">Nome do produto (opcional)</label>
+      <input id="produto" type="text"
+        placeholder="Ex.: Camiseta">
+
+      <label for="custo">Custo por unidade (R$)</label>
+      <input id="custo" type="number" min="0"
+        step="0.01" placeholder="Ex.: 20,00">
+
+      <label for="venda">Preço de venda por unidade (R$)</label>
+      <input id="venda" type="number" min="0"
+        step="0.01" placeholder="Ex.: 40,00">
+
+      <label for="quantidade">Quantidade vendida</label>
+      <input id="quantidade" type="number" min="1"
+        step="1" value="1">
+
+      <label for="despesas">Outras despesas totais (R$)</label>
+      <input id="despesas" type="number" min="0"
+        step="0.01" value="0">
+
+      <button onclick="calcular()">Calcular meu lucro</button>
+
+      <div class="results" id="resultados" aria-live="polite">
+        <h3 id="tituloResultado">Resultado</h3>
+
+        <div class="result-line">
+          <span>Faturamento</span>
+          <strong id="faturamento"></strong>
+        </div>
+
+        <div class="result-line">
+          <span>Custos totais</span>
+          <strong id="custos"></strong>
+        </div>
+
+        <div class="result-line">
+          <span>Lucro ou prejuízo</span>
+          <strong class="profit" id="lucro"></strong>
+        </div>
+
+        <div class="result-line">
+          <span>Margem de lucro</span>
+          <strong id="margem"></strong>
+        </div>
+      </div>
+
+      <p class="note">
+        Estimativa baseada nos valores informados.
+        Inclua taxas, impostos e outros custos para
+        aproximar o resultado do lucro real.
+      </p>
+    </section>
+
+    <footer>
+      Lucro Fácil — uma ferramenta para organizar suas vendas.
+    </footer>
+  </main>
+
+  <script>
+    function calcular() {
+      const custo = Number(document.getElementById("custo").value);
+      const venda = Number(document.getElementById("venda").value);
+      const quantidade = Number(document.getElementById("quantidade").value);
+      const despesas = Number(document.getElementById("despesas").value) || 0;
+      const produto = document.getElementById("produto").value.trim();
+
+      if (
+        document.getElementById("custo").value === "" ||
+        document.getElementById("venda").value === "" ||
+        custo < 0 || venda < 0 ||
+        !Number.isInteger(quantidade) || quantidade < 1 ||
+        despesas < 0
+      ) {
+        alert("Confira os valores e preencha os campos corretamente.");
+        return;
+      }
+
+      const faturamento = venda * quantidade;
+      const custos = custo * quantidade + despesas;
+      const lucro = faturamento - custos;
+      const margem = faturamento > 0
+        ? (lucro / faturamento) * 100
+        : null;
+
+      const dinheiro = valor => valor.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+
+      document.getElementById("tituloResultado").textContent =
+        produto ? "Resultado: " + produto : "Seu resultado";
+
+      document.getElementById("faturamento").textContent =
+        dinheiro(faturamento);
+
+      document.getElementById("custos").textContent =
+        dinheiro(custos);
+
+      const campoLucro = document.getElementById("lucro");
+      campoLucro.textContent = dinheiro(lucro);
+      campoLucro.style.color = lucro >= 0 ? "#13864b" : "#c0392b";
+
+      document.getElementById("margem").textContent =
+        margem === null ? "Não calculável (faturamento zero)"
+        : margem.toLocaleString("pt-BR", {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 2
+        }) + "%";
+
+      document.getElementById("resultados").style.display = "block";
+    }
+  </script>
+</body>
+</html>
