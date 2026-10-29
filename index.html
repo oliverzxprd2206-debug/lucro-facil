@@ -3,210 +3,485 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lucro Fácil | Calculadora de Lucro</title>
-  <meta name="description" content="Calcule o lucro, os custos e a margem de suas vendas gratuitamente com o Lucro Fácil.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071b13">
+  <meta name="description" content="Controle suas vendas, calcule seu lucro e tome decisões melhores com o Lucro Fácil.">
+  <title>Lucro Fácil | Controle suas vendas</title>
   <style>
+    :root {
+      --bg: #071b13;
+      --panel: #10271d;
+      --panel-light: #173529;
+      --green: #54e39a;
+      --text: #f3faf5;
+      --muted: #9bb5a5;
+      --border: #294638;
+    }
+
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      padding: 24px 16px;
-      font-family: Arial, sans-serif;
-      background: #f3f7f4;
-      color: #17251c;
+      background:
+        radial-gradient(ellipse at top, #173e2a 0%, var(--bg) 55%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
     }
 
     .container {
-      max-width: 480px;
-      margin: 0 auto;
+      width: min(100% - 32px, 760px);
+      margin: auto;
     }
 
-    header {
-      text-align: center;
-      margin: 20px 0 28px;
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 22px 0;
+      border-bottom: 1px solid #ffffff12;
     }
 
-    header h1 {
-      color: #13864b;
-      font-size: 32px;
-      margin-bottom: 8px;
+    .logo {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      background: var(--green);
+      color: #071b13;
+      border-radius: 13px;
+      font-size: 22px;
+      font-weight: 900;
     }
 
-    header p {
-      color: #607066;
-      line-height: 1.5;
+    .brand {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .brand span {
+      color: var(--green);
+    }
+
+    .tag {
+      margin-left: auto;
+      padding: 7px 10px;
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .hero {
+      padding: 36px 0 25px;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      font-size: 12px;
+      letter-spacing: 2px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(32px, 8vw, 49px);
+      letter-spacing: -2px;
+      line-height: 1.08;
+      margin: 12px 0;
+    }
+
+    h1 span {
+      color: var(--green);
+    }
+
+    .hero p {
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 500px;
+      margin-bottom: 0;
     }
 
     .card {
-      background: white;
-      border-radius: 18px;
+      background: linear-gradient(145deg, #122b20, #0d2118);
+      border: 1px solid var(--border);
+      border-radius: 22px;
       padding: 22px;
-      box-shadow: 0 6px 25px #183d2510;
-      border: 1px solid #e3ece5;
+      box-shadow: 0 20px 55px #00000020;
+    }
+
+    .card-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .heading-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: #54e39a18;
+      font-size: 23px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .subtitle {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 17px 14px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
     }
 
     label {
       display: block;
-      font-weight: bold;
-      margin: 16px 0 7px;
-      font-size: 14px;
+      margin-bottom: 8px;
+      color: #dcebe0;
+      font-size: 13px;
+      font-weight: 650;
     }
 
     input {
       width: 100%;
-      padding: 14px;
-      border: 1px solid #d5dfd7;
-      border-radius: 10px;
+      min-width: 0;
+      background: #071a12;
+      border: 1px solid var(--border);
+      color: white;
+      border-radius: 11px;
+      padding: 14px 12px;
       font-size: 16px;
-      background: #fff;
+      outline: none;
     }
 
     input:focus {
-      outline: 2px solid #78c99b;
-      border-color: #13864b;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px #54e39a18;
+    }
+
+    input::placeholder {
+      color: #60796a;
     }
 
     button {
-      width: 100%;
-      margin-top: 22px;
-      padding: 15px;
-      background: #13864b;
-      color: white;
-      border: 0;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
+      font: inherit;
       cursor: pointer;
     }
 
-    button:hover {
-      background: #0d6d3b;
+    .primary {
+      width: 100%;
+      margin-top: 22px;
+      padding: 15px;
+      background: var(--green);
+      color: #071b13;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 850;
+      transition: transform .15s, background .15s;
+    }
+
+    .primary:hover {
+      background: #79f0b1;
+    }
+
+    .primary:active {
+      transform: scale(.99);
     }
 
     .results {
-      margin-top: 22px;
-      padding: 18px;
-      border-radius: 12px;
-      background: #edf8f0;
       display: none;
+      margin-top: 22px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      background: #091b13;
     }
 
-    .result-line {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin: 12px 0;
+    .result-top {
+      color: var(--muted);
+      font-size: 13px;
     }
 
     .profit {
-      font-size: 25px;
-      font-weight: bold;
-      color: #13864b;
+      color: var(--green);
+      font-size: clamp(30px, 8vw, 40px);
+      font-weight: 850;
+      letter-spacing: -1px;
+      margin: 8px 0 20px;
+      overflow-wrap: anywhere;
     }
 
-    .note {
+    .profit.loss {
+      color: #ff8888;
+    }
+
+    .line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid #ffffff12;
+      padding: 13px 0;
+      font-size: 14px;
+    }
+
+    .line span {
+      color: var(--muted);
+    }
+
+    .line strong {
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    .secondary {
+      background: transparent;
+      color: var(--green);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 18px 0 35px;
+    }
+
+    .feature {
+      background: #10271d99;
+      border: 1px solid #ffffff10;
+      padding: 15px 10px;
+      border-radius: 14px;
+    }
+
+    .feature b {
+      display: block;
+      font-size: 19px;
+      margin-bottom: 6px;
+    }
+
+    .feature span {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .disclaimer {
       font-size: 12px;
-      color: #647168;
-      line-height: 1.5;
-      margin-top: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-top: 17px;
     }
 
     footer {
       text-align: center;
-      color: #718076;
+      border-top: 1px solid #ffffff12;
+      padding: 22px 0 30px;
+      color: var(--muted);
       font-size: 12px;
-      margin: 24px 0;
+    }
+
+    footer strong {
+      color: var(--green);
+    }
+
+    @media (max-width: 420px) {
+      .container {
+        width: min(100% - 22px, 760px);
+      }
+
+      .card {
+        padding: 17px;
+      }
+
+      .fields {
+        gap: 15px 10px;
+      }
+
+      .tag {
+        font-size: 10px;
+        padding: 6px 8px;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="container">
-    <header>
-      <h1>Lucro Fácil</h1>
-      <p>Descubra quanto você ganha em cada venda.</p>
+  <div class="container">
+    <nav>
+      <div class="logo">L</div>
+      <div class="brand">lucro<span>fácil</span></div>
+      <div class="tag">100% ONLINE</div>
+    </nav>
+
+    <header class="hero">
+      <div class="eyebrow">◆ Gestão inteligente</div>
+      <h1>Venda melhor.<br><span>Lucre mais.</span></h1>
+      <p>
+        Descubra o resultado das suas vendas em segundos.
+        Simples, rápido e direto ao ponto.
+      </p>
     </header>
 
-    <section class="card">
-      <h2>Calculadora de lucro</h2>
-      <p>Preencha os dados do seu produto.</p>
-
-      <label for="produto">Nome do produto (opcional)</label>
-      <input id="produto" type="text"
-        placeholder="Ex.: Camiseta">
-
-      <label for="custo">Custo por unidade (R$)</label>
-      <input id="custo" type="number" min="0"
-        step="0.01" placeholder="Ex.: 20,00">
-
-      <label for="venda">Preço de venda por unidade (R$)</label>
-      <input id="venda" type="number" min="0"
-        step="0.01" placeholder="Ex.: 40,00">
-
-      <label for="quantidade">Quantidade vendida</label>
-      <input id="quantidade" type="number" min="1"
-        step="1" value="1">
-
-      <label for="despesas">Outras despesas totais (R$)</label>
-      <input id="despesas" type="number" min="0"
-        step="0.01" value="0">
-
-      <button onclick="calcular()">Calcular meu lucro</button>
-
-      <div class="results" id="resultados" aria-live="polite">
-        <h3 id="tituloResultado">Resultado</h3>
-
-        <div class="result-line">
-          <span>Faturamento</span>
-          <strong id="faturamento"></strong>
+    <main>
+      <section class="card">
+        <div class="card-heading">
+          <div class="heading-icon">↗</div>
+          <div>
+            <h2>Calculadora de lucro</h2>
+            <p class="subtitle">Preencha os dados da sua venda.</p>
+          </div>
         </div>
 
-        <div class="result-line">
-          <span>Custos totais</span>
-          <strong id="custos"></strong>
-        </div>
+        <form id="formulario">
+          <div class="fields">
+            <div class="field full">
+              <label for="produto">Nome do produto</label>
+              <input id="produto" type="text"
+                placeholder="Ex.: Camiseta básica" maxlength="80">
+            </div>
 
-        <div class="result-line">
-          <span>Lucro ou prejuízo</span>
-          <strong class="profit" id="lucro"></strong>
-        </div>
+            <div class="field">
+              <label for="custo">Custo unitário (R$)</label>
+              <input id="custo" type="number" min="0"
+                step="0.01" placeholder="20,00" required>
+            </div>
 
-        <div class="result-line">
-          <span>Margem de lucro</span>
-          <strong id="margem"></strong>
-        </div>
-      </div>
+            <div class="field">
+              <label for="venda">Preço de venda (R$)</label>
+              <input id="venda" type="number" min="0"
+                step="0.01" placeholder="40,00" required>
+            </div>
 
-      <p class="note">
-        Estimativa baseada nos valores informados.
-        Inclua taxas, impostos e outros custos para
-        aproximar o resultado do lucro real.
-      </p>
-    </section>
+            <div class="field">
+              <label for="quantidade">Unidades vendidas</label>
+              <input id="quantidade" type="number" min="1"
+                step="1" value="1" required>
+            </div>
+
+            <div class="field">
+              <label for="despesas">Outras despesas (R$)</label>
+              <input id="despesas" type="number" min="0"
+                step="0.01" value="0" required>
+            </div>
+          </div>
+
+          <button class="primary" type="submit">
+            Calcular meu lucro &nbsp; →
+          </button>
+        </form>
+
+        <section class="results" id="resultados"
+          aria-live="polite" aria-atomic="true">
+          <div class="result-top" id="tituloResultado">
+            Resultado estimado
+          </div>
+          <div class="profit" id="lucro"></div>
+
+          <div class="line">
+            <span>Faturamento</span>
+            <strong id="faturamento"></strong>
+          </div>
+          <div class="line">
+            <span>Custos totais</span>
+            <strong id="custos"></strong>
+          </div>
+          <div class="line">
+            <span>Margem sobre vendas</span>
+            <strong id="margem"></strong>
+          </div>
+
+          <button class="secondary" id="limpar" type="button">
+            Fazer novo cálculo
+          </button>
+        </section>
+
+        <p class="disclaimer">
+          Os resultados são estimativas com base nos valores informados.
+          Inclua taxas, impostos e demais custos para obter uma estimativa
+          mais próxima do seu resultado real.
+        </p>
+      </section>
+
+      <section class="features" aria-label="Vantagens">
+        <div class="feature">
+          <b>⚡</b>
+          <span>Cálculo rápido</span>
+        </div>
+        <div class="feature">
+          <b>◎</b>
+          <span>Fácil de usar</span>
+        </div>
+        <div class="feature">
+          <b>↗</b>
+          <span>Mais controle</span>
+        </div>
+      </section>
+    </main>
 
     <footer>
-      Lucro Fácil — uma ferramenta para organizar suas vendas.
+      <strong>lucrofácil</strong><br>
+      Mais clareza nos números, mais controle nas vendas.<br>
+      © <span id="ano"></span> Lucro Fácil
     </footer>
-  </main>
+  </div>
 
   <script>
-    function calcular() {
-      const custo = Number(document.getElementById("custo").value);
-      const venda = Number(document.getElementById("venda").value);
-      const quantidade = Number(document.getElementById("quantidade").value);
-      const despesas = Number(document.getElementById("despesas").value) || 0;
+    const formulario = document.getElementById("formulario");
+    const resultados = document.getElementById("resultados");
+
+    const dinheiro = valor => valor.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
+
+    document.getElementById("ano").textContent =
+      new Date().getFullYear();
+
+    formulario.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const custoInput = document.getElementById("custo");
+      const vendaInput = document.getElementById("venda");
+      const qtdInput = document.getElementById("quantidade");
+      const despInput = document.getElementById("despesas");
+
+      const custo = Number(custoInput.value);
+      const venda = Number(vendaInput.value);
+      const quantidade = Number(qtdInput.value);
+      const despesas = Number(despInput.value);
       const produto = document.getElementById("produto").value.trim();
 
       if (
-        document.getElementById("custo").value === "" ||
-        document.getElementById("venda").value === "" ||
-        custo < 0 || venda < 0 ||
-        !Number.isInteger(quantidade) || quantidade < 1 ||
-        despesas < 0
+        custoInput.value === "" || vendaInput.value === "" ||
+        despInput.value === "" ||
+        !Number.isFinite(custo) || !Number.isFinite(venda) ||
+        !Number.isFinite(despesas) ||
+        custo < 0 || venda < 0 || despesas < 0 ||
+        !Number.isSafeInteger(quantidade) || quantidade < 1
       ) {
-        alert("Confira os valores e preencha os campos corretamente.");
+        alert("Confira os valores preenchidos e tente novamente.");
         return;
       }
 
@@ -217,33 +492,48 @@
         ? (lucro / faturamento) * 100
         : null;
 
-      const dinheiro = valor => valor.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-      });
+      if (
+        !Number.isFinite(faturamento) ||
+        !Number.isFinite(custos) ||
+        !Number.isFinite(lucro)
+      ) {
+        alert("Os valores são muito altos. Confira os dados.");
+        return;
+      }
 
       document.getElementById("tituloResultado").textContent =
-        produto ? "Resultado: " + produto : "Seu resultado";
+        produto ? "Resultado de " + produto : "Seu resultado estimado";
+
+      const campoLucro = document.getElementById("lucro");
+      campoLucro.textContent =
+        (lucro < 0 ? "Prejuízo: " : "Lucro: ") + dinheiro(lucro);
+      campoLucro.classList.toggle("loss", lucro < 0);
 
       document.getElementById("faturamento").textContent =
         dinheiro(faturamento);
-
       document.getElementById("custos").textContent =
         dinheiro(custos);
 
-      const campoLucro = document.getElementById("lucro");
-      campoLucro.textContent = dinheiro(lucro);
-      campoLucro.style.color = lucro >= 0 ? "#13864b" : "#c0392b";
-
       document.getElementById("margem").textContent =
-        margem === null ? "Não calculável (faturamento zero)"
-        : margem.toLocaleString("pt-BR", {
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 2
-        }) + "%";
+        margem === null
+          ? "Não calculável"
+          : margem.toLocaleString("pt-BR", {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 2
+            }) + "%";
 
-      document.getElementById("resultados").style.display = "block";
-    }
+      resultados.style.display = "block";
+      resultados.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
+    });
+
+    document.getElementById("limpar").addEventListener("click", function() {
+      formulario.reset();
+      resultados.style.display = "none";
+      document.getElementById("produto").focus();
+    });
   </script>
 </body>
 </html>
