@@ -6,7 +6,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#071b13">
 <meta name="description" content="Calcule e acompanhe suas vendas com o Lucro Fácil.">
-<title>Lucro Fácil | Controle de vendas</title>
+
+/* Painel financeiro */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.dashboard-box {
+  background: #071b13;
+  border: 1px solid #294638;
+  border-radius: 13px;
+  padding: 15px;
+  min-width: 0;
+}
+
+.dashboard-box span {
+  display: block;
+  color: #9bb5a5;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.dashboard-box strong {
+  display: block;
+  color: #54e39a;
+  font-size: clamp(16px, 4vw, 22px);
+  overflow-wrap: anywhere;
+}
+
+.dashboard-note {
+  color: #9bb5a5;
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 14px;
+}
+  <title>Lucro Fácil | Controle de vendas</title>
 <style>
 :root {
   --bg:#071b13; --panel:#10271d; --green:#54e39a;
@@ -99,6 +136,39 @@ footer strong {color:var(--green);}
   </header>
 
   <main>
+   
+<section class="card">
+  <div class="heading">
+    <div class="heading-icon">▥</div>
+    <div>
+      <h2>Painel financeiro</h2>
+      <p class="subtitle">Resumo dos seus resultados registrados.</p>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="dashboard-box">
+      <span>Faturamento total</span>
+      <strong id="painelFaturamento">R$ 0,00</strong>
+    </div>
+    <div class="dashboard-box">
+      <span>Lucro acumulado</span>
+      <strong id="painelLucro">R$ 0,00</strong>
+    </div>
+    <div class="dashboard-box">
+      <span>Vendas registradas</span>
+      <strong id="painelVendas">0</strong>
+    </div>
+    <div class="dashboard-box">
+      <span>Margem acumulada</span>
+      <strong id="painelMargem">—</strong>
+    </div>
+  </div>
+
+  <p class="dashboard-note" id="painelResumo">
+    Salve sua primeira venda para começar.
+  </p>
+</section>
     <section class="card">
       <div class="heading">
         <div class="heading-icon">↗</div>
@@ -309,7 +379,7 @@ $("novo").addEventListener("click", () => {
 });
 
 function renderizarHistorico() {
-  $("totalVendas").textContent = historico.length;
+  $("totalVendas").textContent = historico.length;renderizarPainel();
 
   const totalLucro = historico.reduce((soma, item) => soma + item.lucro, 0);
   $("totalLucro").textContent = dinheiro(totalLucro);
@@ -378,6 +448,38 @@ function renderizarHistorico() {
         historico = anterior;
         return;
       }
+     
+function renderizarPainel() {
+  const faturamento = historico.reduce(
+    (soma, item) => soma + item.faturamento, 0
+  );
+
+  const lucro = historico.reduce(
+    (soma, item) => soma + item.lucro, 0
+  );
+
+  const margem = faturamento > 0
+    ? (lucro / faturamento) * 100
+    : null;
+
+  $("painelFaturamento").textContent = dinheiro(faturamento);
+  $("painelLucro").textContent = dinheiro(lucro);
+  $("painelVendas").textContent = historico.length;
+
+  $("painelMargem").textContent = margem === null
+    ? "—"
+    : margem.toLocaleString("pt-BR", {
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 1
+      }) + "%";
+
+  $("painelLucro").style.color =
+    lucro < 0 ? "#ff8888" : "#54e39a";
+
+  $("painelResumo").textContent = historico.length
+    ? "Resumo de todos os registros salvos neste navegador."
+    : "Salve sua primeira venda para começar.";
+  }
       renderizarHistorico();
     });
 
