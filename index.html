@@ -2,538 +2,411 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#071b13">
-  <meta name="description" content="Controle suas vendas, calcule seu lucro e tome decisões melhores com o Lucro Fácil.">
-  <title>Lucro Fácil | Controle suas vendas</title>
-  <style>
-    :root {
-      --bg: #071b13;
-      --panel: #10271d;
-      --panel-light: #173529;
-      --green: #54e39a;
-      --text: #f3faf5;
-      --muted: #9bb5a5;
-      --border: #294638;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background:
-        radial-gradient(ellipse at top, #173e2a 0%, var(--bg) 55%);
-      color: var(--text);
-      font-family: system-ui, -apple-system, sans-serif;
-      min-height: 100vh;
-    }
-
-    .container {
-      width: min(100% - 32px, 760px);
-      margin: auto;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 22px 0;
-      border-bottom: 1px solid #ffffff12;
-    }
-
-    .logo {
-      display: grid;
-      place-items: center;
-      width: 42px;
-      height: 42px;
-      background: var(--green);
-      color: #071b13;
-      border-radius: 13px;
-      font-size: 22px;
-      font-weight: 900;
-    }
-
-    .brand {
-      font-size: 19px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-
-    .brand span {
-      color: var(--green);
-    }
-
-    .tag {
-      margin-left: auto;
-      padding: 7px 10px;
-      border: 1px solid var(--border);
-      border-radius: 30px;
-      color: var(--green);
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .hero {
-      padding: 36px 0 25px;
-    }
-
-    .eyebrow {
-      color: var(--green);
-      font-size: 12px;
-      letter-spacing: 2px;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      font-size: clamp(32px, 8vw, 49px);
-      letter-spacing: -2px;
-      line-height: 1.08;
-      margin: 12px 0;
-    }
-
-    h1 span {
-      color: var(--green);
-    }
-
-    .hero p {
-      color: var(--muted);
-      line-height: 1.7;
-      max-width: 500px;
-      margin-bottom: 0;
-    }
-
-    .card {
-      background: linear-gradient(145deg, #122b20, #0d2118);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 22px;
-      box-shadow: 0 20px 55px #00000020;
-    }
-
-    .card-heading {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 22px;
-    }
-
-    .heading-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      background: #54e39a18;
-      font-size: 23px;
-    }
-
-    h2 {
-      margin: 0;
-      font-size: 20px;
-    }
-
-    .subtitle {
-      margin: 5px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .fields {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 17px 14px;
-    }
-
-    .field.full {
-      grid-column: 1 / -1;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: #dcebe0;
-      font-size: 13px;
-      font-weight: 650;
-    }
-
-    input {
-      width: 100%;
-      min-width: 0;
-      background: #071a12;
-      border: 1px solid var(--border);
-      color: white;
-      border-radius: 11px;
-      padding: 14px 12px;
-      font-size: 16px;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px #54e39a18;
-    }
-
-    input::placeholder {
-      color: #60796a;
-    }
-
-    button {
-      font: inherit;
-      cursor: pointer;
-    }
-
-    .primary {
-      width: 100%;
-      margin-top: 22px;
-      padding: 15px;
-      background: var(--green);
-      color: #071b13;
-      border: none;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 850;
-      transition: transform .15s, background .15s;
-    }
-
-    .primary:hover {
-      background: #79f0b1;
-    }
-
-    .primary:active {
-      transform: scale(.99);
-    }
-
-    .results {
-      display: none;
-      margin-top: 22px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 18px;
-      background: #091b13;
-    }
-
-    .result-top {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .profit {
-      color: var(--green);
-      font-size: clamp(30px, 8vw, 40px);
-      font-weight: 850;
-      letter-spacing: -1px;
-      margin: 8px 0 20px;
-      overflow-wrap: anywhere;
-    }
-
-    .profit.loss {
-      color: #ff8888;
-    }
-
-    .line {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      border-top: 1px solid #ffffff12;
-      padding: 13px 0;
-      font-size: 14px;
-    }
-
-    .line span {
-      color: var(--muted);
-    }
-
-    .line strong {
-      text-align: right;
-      overflow-wrap: anywhere;
-    }
-
-    .secondary {
-      background: transparent;
-      color: var(--green);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 11px;
-      width: 100%;
-      margin-top: 10px;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin: 18px 0 35px;
-    }
-
-    .feature {
-      background: #10271d99;
-      border: 1px solid #ffffff10;
-      padding: 15px 10px;
-      border-radius: 14px;
-    }
-
-    .feature b {
-      display: block;
-      font-size: 19px;
-      margin-bottom: 6px;
-    }
-
-    .feature span {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
-    .disclaimer {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.7;
-      margin-top: 17px;
-    }
-
-    footer {
-      text-align: center;
-      border-top: 1px solid #ffffff12;
-      padding: 22px 0 30px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    footer strong {
-      color: var(--green);
-    }
-
-    @media (max-width: 420px) {
-      .container {
-        width: min(100% - 22px, 760px);
-      }
-
-      .card {
-        padding: 17px;
-      }
-
-      .fields {
-        gap: 15px 10px;
-      }
-
-      .tag {
-        font-size: 10px;
-        padding: 6px 8px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071b13">
+<meta name="description" content="Calcule e acompanhe suas vendas com o Lucro Fácil.">
+<title>Lucro Fácil | Controle de vendas</title>
+<style>
+:root {
+  --bg:#071b13; --panel:#10271d; --green:#54e39a;
+  --text:#f3faf5; --muted:#9bb5a5; --border:#294638;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; min-height:100vh; padding:0 0 20px;
+  background:radial-gradient(ellipse at top,#173e2a,var(--bg) 55%);
+  color:var(--text); font-family:system-ui,Arial,sans-serif;
+}
+.container { width:min(100% - 28px,760px); margin:auto; }
+nav { display:flex; align-items:center; gap:10px; padding:20px 0;
+  border-bottom:1px solid #ffffff12; }
+.logo { display:grid; place-items:center; width:42px;height:42px;
+  border-radius:13px;background:var(--green);color:var(--bg);
+  font-size:22px;font-weight:900; }
+.brand {font-size:19px;font-weight:800;}
+.brand span {color:var(--green);}
+.tag {margin-left:auto;color:var(--green);font-size:11px;
+  border:1px solid var(--border);padding:7px 10px;border-radius:30px;}
+.hero {padding:30px 0 22px;}
+.eyebrow {color:var(--green);font-size:12px;letter-spacing:2px;font-weight:800;}
+h1 {font-size:clamp(32px,8vw,46px);line-height:1.1;letter-spacing:-1.5px;margin:12px 0;}
+h1 span {color:var(--green);}
+.hero p,.muted {color:var(--muted);line-height:1.6;}
+.card {background:linear-gradient(145deg,#122b20,#0d2118);
+  border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:18px;}
+.heading {display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.heading-icon {width:44px;height:44px;display:grid;place-items:center;
+  background:#54e39a18;border-radius:13px;font-size:22px;}
+h2 {font-size:19px;margin:0;}
+.subtitle {font-size:13px;color:var(--muted);margin:5px 0 0;}
+.fields {display:grid;grid-template-columns:1fr 1fr;gap:15px 12px;}
+.full {grid-column:1/-1;}
+label {display:block;font-size:13px;font-weight:650;margin-bottom:8px;}
+input {width:100%;min-width:0;background:#071a12;border:1px solid var(--border);
+  color:white;border-radius:10px;padding:13px 11px;font-size:16px;}
+input:focus {outline:2px solid var(--green);}
+button {font:inherit;cursor:pointer;}
+.primary {width:100%;margin-top:20px;padding:15px;border:0;border-radius:11px;
+  background:var(--green);color:#071b13;font-weight:850;}
+.secondary {padding:10px 12px;border:1px solid var(--border);
+  background:transparent;color:var(--green);border-radius:9px;}
+.danger {color:#ff9b9b;border-color:#774040;}
+.results {display:none;margin-top:20px;padding:16px;background:#091b13;
+  border:1px solid var(--border);border-radius:14px;}
+.profit {font-size:32px;font-weight:850;color:var(--green);overflow-wrap:anywhere;margin:10px 0 18px;}
+.loss {color:#ff8888;}
+.line {display:flex;justify-content:space-between;gap:12px;
+  padding:12px 0;border-top:1px solid #ffffff12;font-size:14px;}
+.line span {color:var(--muted);}
+.line strong {text-align:right;overflow-wrap:anywhere;}
+.notice {font-size:12px;color:var(--muted);line-height:1.6;margin:16px 0 0;}
+.stats {display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0;}
+.stat {background:#071b13;border:1px solid var(--border);border-radius:12px;padding:13px;}
+.stat span {display:block;font-size:12px;color:var(--muted);margin-bottom:7px;}
+.stat strong {font-size:18px;overflow-wrap:anywhere;}
+.history-item {border-top:1px solid var(--border);padding:15px 0;}
+.history-head {display:flex;justify-content:space-between;gap:10px;align-items:start;}
+.history-head strong {overflow-wrap:anywhere;}
+.history-date {font-size:11px;color:var(--muted);margin-top:5px;}
+.history-meta {display:flex;justify-content:space-between;gap:10px;margin:12px 0;font-size:13px;}
+.history-meta span {color:var(--muted);}
+.history-actions {display:flex;justify-content:flex-end;gap:8px;}
+.empty {padding:22px 0;text-align:center;color:var(--muted);font-size:14px;}
+.section-top {display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:8px;}
+footer {text-align:center;color:var(--muted);font-size:12px;padding:12px 0 25px;}
+footer strong {color:var(--green);}
+@media(max-width:380px) {
+  .card {padding:15px;}
+  .tag {font-size:9px;}
+  .fields {gap:13px 9px;}
+  .stat strong {font-size:15px;}
+}
+</style>
 </head>
 <body>
-  <div class="container">
-    <nav>
-      <div class="logo">L</div>
-      <div class="brand">lucro<span>fácil</span></div>
-      <div class="tag">100% ONLINE</div>
-    </nav>
+<div class="container">
+  <nav>
+    <div class="logo">L</div>
+    <div class="brand">lucro<span>fácil</span></div>
+    <div class="tag">CONTROLE DE VENDAS</div>
+  </nav>
 
-    <header class="hero">
-      <div class="eyebrow">◆ Gestão inteligente</div>
-      <h1>Venda melhor.<br><span>Lucre mais.</span></h1>
-      <p>
-        Descubra o resultado das suas vendas em segundos.
-        Simples, rápido e direto ao ponto.
-      </p>
-    </header>
+  <header class="hero">
+    <div class="eyebrow">◆ GESTÃO INTELIGENTE</div>
+    <h1>Venda melhor.<br><span>Lucre mais.</span></h1>
+    <p>Calcule seus resultados e acompanhe suas vendas em um só lugar.</p>
+  </header>
 
-    <main>
-      <section class="card">
-        <div class="card-heading">
-          <div class="heading-icon">↗</div>
+  <main>
+    <section class="card">
+      <div class="heading">
+        <div class="heading-icon">↗</div>
+        <div>
+          <h2>Calculadora de lucro</h2>
+          <p class="subtitle">Informe os dados da sua venda.</p>
+        </div>
+      </div>
+
+      <form id="formulario">
+        <div class="fields">
+          <div class="full">
+            <label for="produto">Nome do produto</label>
+            <input id="produto" maxlength="80" placeholder="Ex.: Camiseta básica">
+          </div>
           <div>
-            <h2>Calculadora de lucro</h2>
-            <p class="subtitle">Preencha os dados da sua venda.</p>
+            <label for="custo">Custo unitário (R$)</label>
+            <input id="custo" type="number" min="0" step="0.01" placeholder="20,00" required>
+          </div>
+          <div>
+            <label for="venda">Preço de venda (R$)</label>
+            <input id="venda" type="number" min="0" step="0.01" placeholder="40,00" required>
+          </div>
+          <div>
+            <label for="quantidade">Unidades</label>
+            <input id="quantidade" type="number" min="1" step="1" value="1" required>
+          </div>
+          <div>
+            <label for="despesas">Outras despesas (R$)</label>
+            <input id="despesas" type="number" min="0" step="0.01" value="0" required>
           </div>
         </div>
+        <button class="primary" type="submit">Calcular meu lucro →</button>
+      </form>
 
-        <form id="formulario">
-          <div class="fields">
-            <div class="field full">
-              <label for="produto">Nome do produto</label>
-              <input id="produto" type="text"
-                placeholder="Ex.: Camiseta básica" maxlength="80">
-            </div>
-
-            <div class="field">
-              <label for="custo">Custo unitário (R$)</label>
-              <input id="custo" type="number" min="0"
-                step="0.01" placeholder="20,00" required>
-            </div>
-
-            <div class="field">
-              <label for="venda">Preço de venda (R$)</label>
-              <input id="venda" type="number" min="0"
-                step="0.01" placeholder="40,00" required>
-            </div>
-
-            <div class="field">
-              <label for="quantidade">Unidades vendidas</label>
-              <input id="quantidade" type="number" min="1"
-                step="1" value="1" required>
-            </div>
-
-            <div class="field">
-              <label for="despesas">Outras despesas (R$)</label>
-              <input id="despesas" type="number" min="0"
-                step="0.01" value="0" required>
-            </div>
-          </div>
-
-          <button class="primary" type="submit">
-            Calcular meu lucro &nbsp; →
-          </button>
-        </form>
-
-        <section class="results" id="resultados"
-          aria-live="polite" aria-atomic="true">
-          <div class="result-top" id="tituloResultado">
-            Resultado estimado
-          </div>
-          <div class="profit" id="lucro"></div>
-
-          <div class="line">
-            <span>Faturamento</span>
-            <strong id="faturamento"></strong>
-          </div>
-          <div class="line">
-            <span>Custos totais</span>
-            <strong id="custos"></strong>
-          </div>
-          <div class="line">
-            <span>Margem sobre vendas</span>
-            <strong id="margem"></strong>
-          </div>
-
-          <button class="secondary" id="limpar" type="button">
-            Fazer novo cálculo
-          </button>
-        </section>
-
-        <p class="disclaimer">
-          Os resultados são estimativas com base nos valores informados.
-          Inclua taxas, impostos e demais custos para obter uma estimativa
-          mais próxima do seu resultado real.
-        </p>
+      <section class="results" id="resultados" aria-live="polite">
+        <div class="muted" id="tituloResultado">Resultado estimado</div>
+        <div class="profit" id="lucro"></div>
+        <div class="line"><span>Faturamento</span><strong id="faturamento"></strong></div>
+        <div class="line"><span>Custos totais</span><strong id="custos"></strong></div>
+        <div class="line"><span>Margem sobre vendas</span><strong id="margem"></strong></div>
+        <button class="primary" id="salvar" type="button">＋ Salvar no histórico</button>
+        <button class="secondary" id="novo" type="button" style="width:100%;margin-top:10px">Novo cálculo</button>
+        <p class="notice" id="mensagem"></p>
       </section>
 
-      <section class="features" aria-label="Vantagens">
-        <div class="feature">
-          <b>⚡</b>
-          <span>Cálculo rápido</span>
+      <p class="notice">Os resultados são estimativas baseadas nos valores informados.</p>
+    </section>
+
+    <section class="card">
+      <div class="heading">
+        <div class="heading-icon">▤</div>
+        <div>
+          <h2>Histórico de vendas</h2>
+          <p class="subtitle">Seus cálculos salvos neste navegador.</p>
         </div>
-        <div class="feature">
-          <b>◎</b>
-          <span>Fácil de usar</span>
-        </div>
-        <div class="feature">
-          <b>↗</b>
-          <span>Mais controle</span>
-        </div>
-      </section>
-    </main>
+      </div>
 
-    <footer>
-      <strong>lucrofácil</strong><br>
-      Mais clareza nos números, mais controle nas vendas.<br>
-      © <span id="ano"></span> Lucro Fácil
-    </footer>
-  </div>
+      <div class="stats">
+        <div class="stat"><span>Vendas salvas</span><strong id="totalVendas">0</strong></div>
+        <div class="stat"><span>Lucro acumulado</span><strong id="totalLucro">R$ 0,00</strong></div>
+      </div>
 
-  <script>
-    const formulario = document.getElementById("formulario");
-    const resultados = document.getElementById("resultados");
+      <div class="section-top">
+        <strong>Registros recentes</strong>
+        <button class="secondary danger" id="limparHistorico" type="button">Apagar tudo</button>
+      </div>
 
-    const dinheiro = valor => valor.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL"
-    });
+      <div id="historico" class="empty">Nenhuma venda salva ainda.</div>
+      <p class="notice">O histórico fica neste aparelho e navegador. Ele não é sincronizado entre dispositivos. Evite limpar os dados do navegador se quiser manter os registros.</p>
+    </section>
+  </main>
 
-    document.getElementById("ano").textContent =
-      new Date().getFullYear();
+  <footer><strong>lucrofácil</strong><br>Mais controle sobre suas vendas.<br>© <span id="ano"></span> Lucro Fácil</footer>
+</div>
 
-    formulario.addEventListener("submit", function(event) {
-      event.preventDefault();
+<script>
+const CHAVE = "lucroFacilHistoricoV1";
+const $ = id => document.getElementById(id);
+let calculoAtual = null;
+let historico = carregarHistorico();
 
-      const custoInput = document.getElementById("custo");
-      const vendaInput = document.getElementById("venda");
-      const qtdInput = document.getElementById("quantidade");
-      const despInput = document.getElementById("despesas");
+function dinheiro(valor) {
+  return valor.toLocaleString("pt-BR", {
+    style:"currency", currency:"BRL"
+  });
+}
 
-      const custo = Number(custoInput.value);
-      const venda = Number(vendaInput.value);
-      const quantidade = Number(qtdInput.value);
-      const despesas = Number(despInput.value);
-      const produto = document.getElementById("produto").value.trim();
+function carregarHistorico() {
+  try {
+    const dados = JSON.parse(localStorage.getItem(CHAVE) || "[]");
+    if (!Array.isArray(dados)) return [];
+    return dados.filter(item =>
+      item && typeof item.id === "string" &&
+      typeof item.produto === "string" &&
+      Number.isFinite(item.lucro) &&
+      Number.isFinite(item.faturamento) &&
+      Number.isFinite(item.custos) &&
+      Number.isFinite(item.quantidade) &&
+      typeof item.data === "string"
+    );
+  } catch {
+    return [];
+  }
+}
 
-      if (
-        custoInput.value === "" || vendaInput.value === "" ||
-        despInput.value === "" ||
-        !Number.isFinite(custo) || !Number.isFinite(venda) ||
-        !Number.isFinite(despesas) ||
-        custo < 0 || venda < 0 || despesas < 0 ||
-        !Number.isSafeInteger(quantidade) || quantidade < 1
-      ) {
-        alert("Confira os valores preenchidos e tente novamente.");
+function guardarHistorico() {
+  try {
+    localStorage.setItem(CHAVE, JSON.stringify(historico));
+    return true;
+  } catch {
+    alert("Não foi possível salvar. Verifique o espaço disponível no navegador.");
+    return false;
+  }
+}
+
+$("ano").textContent = new Date().getFullYear();
+
+$("formulario").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const custo = Number($("custo").value);
+  const venda = Number($("venda").value);
+  const quantidade = Number($("quantidade").value);
+  const despesas = Number($("despesas").value);
+
+  if (
+    $("custo").value === "" || $("venda").value === "" ||
+    $("despesas").value === "" ||
+    !Number.isFinite(custo) || !Number.isFinite(venda) ||
+    !Number.isFinite(despesas) || custo < 0 || venda < 0 ||
+    despesas < 0 || !Number.isSafeInteger(quantidade) ||
+    quantidade < 1
+  ) {
+    alert("Confira os valores preenchidos.");
+    return;
+  }
+
+  const faturamento = venda * quantidade;
+  const custos = custo * quantidade + despesas;
+  const lucro = faturamento - custos;
+
+  if (![faturamento, custos, lucro].every(Number.isFinite)) {
+    alert("Os valores são muito altos. Confira os dados.");
+    return;
+  }
+
+  calculoAtual = {
+    produto: $("produto").value.trim() || "Produto sem nome",
+    custo, venda, quantidade, despesas,
+    faturamento, custos, lucro,
+    margem: faturamento > 0 ? lucro / faturamento * 100 : null
+  };
+
+  $("tituloResultado").textContent = calculoAtual.produto;
+  $("lucro").textContent = (lucro < 0 ? "Prejuízo: " : "Lucro: ") + dinheiro(lucro);
+  $("lucro").classList.toggle("loss", lucro < 0);
+  $("faturamento").textContent = dinheiro(faturamento);
+  $("custos").textContent = dinheiro(custos);
+  $("margem").textContent = calculoAtual.margem === null
+    ? "Não calculável"
+    : calculoAtual.margem.toLocaleString("pt-BR", {
+        maximumFractionDigits:2, minimumFractionDigits:1
+      }) + "%";
+
+  const jaSalvo = historico.some(item =>
+    item.produto === calculoAtual.produto &&
+    item.custo === custo && item.venda === venda &&
+    item.quantidade === quantidade && item.despesas === despesas
+  );
+
+  $("mensagem").textContent = jaSalvo
+    ? "Este cálculo já aparece no histórico. Você pode salvá-lo novamente se for uma nova venda."
+    : "Confira os valores e salve para registrar esta venda.";
+
+  $("salvar").disabled = false;
+  $("salvar").textContent = "＋ Salvar no histórico";
+  $("resultados").style.display = "block";
+  $("resultados").scrollIntoView({behavior:"smooth", block:"nearest"});
+});
+
+$("salvar").addEventListener("click", () => {
+  if (!calculoAtual) return;
+
+  const registro = {
+    ...calculoAtual,
+    id: Date.now().toString() + "-" + Math.random().toString(36).slice(2,8),
+    data: new Date().toISOString()
+  };
+
+  historico.unshift(registro);
+
+  if (!guardarHistorico()) {
+    historico.shift();
+    return;
+  }
+
+  renderizarHistorico();
+  $("mensagem").textContent = "Venda salva no histórico deste navegador.";
+  $("salvar").textContent = "✓ Salvo com sucesso";
+});
+
+$("novo").addEventListener("click", () => {
+  $("formulario").reset();
+  $("resultados").style.display = "none";
+  calculoAtual = null;
+  $("produto").focus();
+});
+
+function renderizarHistorico() {
+  $("totalVendas").textContent = historico.length;
+
+  const totalLucro = historico.reduce((soma, item) => soma + item.lucro, 0);
+  $("totalLucro").textContent = dinheiro(totalLucro);
+  $("totalLucro").style.color = totalLucro < 0 ? "#ff8888" : "var(--green)";
+
+  const area = $("historico");
+  area.replaceChildren();
+
+  if (historico.length === 0) {
+    area.className = "empty";
+    area.textContent = "Nenhuma venda salva ainda.";
+    return;
+  }
+
+  area.className = "";
+
+  historico.forEach(item => {
+    const card = document.createElement("article");
+    card.className = "history-item";
+
+    const head = document.createElement("div");
+    head.className = "history-head";
+
+    const info = document.createElement("div");
+    const nome = document.createElement("strong");
+    nome.textContent = item.produto;
+
+    const data = document.createElement("div");
+    data.className = "history-date";
+    const dataObj = new Date(item.data);
+    data.textContent = Number.isNaN(dataObj.getTime())
+      ? "Data indisponível"
+      : dataObj.toLocaleString("pt-BR");
+
+    info.append(nome, data);
+
+    const valor = document.createElement("strong");
+    valor.textContent = dinheiro(item.lucro);
+    valor.style.color = item.lucro < 0 ? "#ff8888" : "var(--green)";
+    head.append(info, valor);
+
+    const meta = document.createElement("div");
+    meta.className = "history-meta";
+
+    const qtd = document.createElement("span");
+    qtd.textContent = item.quantidade + " unidade(s)";
+
+    const fat = document.createElement("span");
+    fat.textContent = "Faturamento: " + dinheiro(item.faturamento);
+    meta.append(qtd, fat);
+
+    const actions = document.createElement("div");
+    actions.className = "history-actions";
+
+    const excluir = document.createElement("button");
+    excluir.className = "secondary danger";
+    excluir.type = "button";
+    excluir.textContent = "Excluir registro";
+    excluir.addEventListener("click", () => {
+      if (!confirm("Deseja excluir este registro?")) return;
+
+      const anterior = historico;
+      historico = historico.filter(reg => reg.id !== item.id);
+
+      if (!guardarHistorico()) {
+        historico = anterior;
         return;
       }
-
-      const faturamento = venda * quantidade;
-      const custos = custo * quantidade + despesas;
-      const lucro = faturamento - custos;
-      const margem = faturamento > 0
-        ? (lucro / faturamento) * 100
-        : null;
-
-      if (
-        !Number.isFinite(faturamento) ||
-        !Number.isFinite(custos) ||
-        !Number.isFinite(lucro)
-      ) {
-        alert("Os valores são muito altos. Confira os dados.");
-        return;
-      }
-
-      document.getElementById("tituloResultado").textContent =
-        produto ? "Resultado de " + produto : "Seu resultado estimado";
-
-      const campoLucro = document.getElementById("lucro");
-      campoLucro.textContent =
-        (lucro < 0 ? "Prejuízo: " : "Lucro: ") + dinheiro(lucro);
-      campoLucro.classList.toggle("loss", lucro < 0);
-
-      document.getElementById("faturamento").textContent =
-        dinheiro(faturamento);
-      document.getElementById("custos").textContent =
-        dinheiro(custos);
-
-      document.getElementById("margem").textContent =
-        margem === null
-          ? "Não calculável"
-          : margem.toLocaleString("pt-BR", {
-              minimumFractionDigits: 1,
-              maximumFractionDigits: 2
-            }) + "%";
-
-      resultados.style.display = "block";
-      resultados.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest"
-      });
+      renderizarHistorico();
     });
 
-    document.getElementById("limpar").addEventListener("click", function() {
-      formulario.reset();
-      resultados.style.display = "none";
-      document.getElementById("produto").focus();
-    });
-  </script>
+    actions.append(excluir);
+    card.append(head, meta, actions);
+    area.append(card);
+  });
+}
+
+$("limparHistorico").addEventListener("click", () => {
+  if (!historico.length) {
+    alert("O histórico já está vazio.");
+    return;
+  }
+
+  if (!confirm("Apagar todo o histórico deste navegador? Essa ação não pode ser desfeita.")) return;
+
+  const anterior = historico;
+  historico = [];
+
+  if (!guardarHistorico()) {
+    historico = anterior;
+    return;
+  }
+
+  renderizarHistorico();
+});
+
+renderizarHistorico();
+</script>
 </body>
 </html>
