@@ -1,69 +1,653 @@
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#071b13">
-<meta name="description" content="Lucro Fácil: calcule lucros, organize produtos, registre vendas e acompanhe relatórios.">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" href="./icon.svg" type="image/svg+xml">
-<title>Lucro Fácil | Controle de vendas</title>
+<meta name="description" content="Lucro Fácil: controle seus produtos, vendas, custos e lucros.">
+<title>Lucro Fácil | Gestão inteligente</title>
+
 <style>
-:root{--bg:#071b13;--panel:#10271d;--green:#54e39a;--text:#f3faf5;--muted:#a2b9aa;--border:#294638;--red:#ff8888}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#173e2c 0,#071b13 55%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-button,input,select{font:inherit}button{cursor:pointer}.wrap{width:min(100% - 28px,900px);margin:auto;padding:20px 0 40px}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 0 18px;border-bottom:1px solid #ffffff17}.brand{display:flex;align-items:center;gap:11px;font-size:20px;font-weight:850}.brand-mark{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:var(--green);color:#082117;font-size:25px;font-weight:950}.brand span{color:var(--green)}.pill{border:1px solid var(--border);border-radius:999px;padding:8px 11px;color:var(--green);font-size:10px;font-weight:800;letter-spacing:.7px}
-.hero{padding:28px 0 18px}.eyebrow{color:var(--green);font-size:12px;font-weight:850;letter-spacing:2px;text-transform:uppercase}h1{font-size:clamp(34px,8vw,48px);line-height:1.05;letter-spacing:-1.8px;margin:12px 0}h1 span{color:var(--green)}.subtitle{color:var(--muted);line-height:1.6;margin:0}
-nav{display:flex;gap:8px;overflow:auto;padding:6px 0 14px}nav button{white-space:nowrap;border:1px solid var(--border);border-radius:999px;background:#10271d;color:var(--muted);padding:9px 13px;font-size:12px;font-weight:800}nav button.active{background:var(--green);border-color:var(--green);color:#062015}
-.card{background:linear-gradient(145deg,#102b20f2,#0b2118f5);border:1px solid var(--border);border-radius:21px;padding:18px;margin:12px 0;box-shadow:0 14px 35px #00000012}.card-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}.icon{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#1b4430;color:var(--green);font-size:21px;flex-shrink:0}h2{font-size:19px;line-height:1.2;margin:0 0 4px}.card-head p{font-size:13px;color:var(--muted);margin:0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{min-width:0}label{display:block;font-size:12px;color:var(--muted);font-weight:700;margin:0 0 7px}input,select{width:100%;min-width:0;border:1px solid var(--border);border-radius:12px;background:#071b13;color:var(--text);padding:12px;outline:none}input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px #54e39a18}input::placeholder{color:#718c7b}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}.btn{border:0;border-radius:12px;padding:12px 14px;font-weight:850}.primary{background:var(--green);color:#062015;flex:1}.secondary{background:#183a29;color:var(--text);border:1px solid var(--border)}.danger{background:#3a2020;color:#ffc1c1;border:1px solid #633737}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:9px}.metric{padding:13px;border:1px solid var(--border);background:#071b13a8;border-radius:14px;min-width:0}.metric span{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}.metric strong{display:block;font-size:clamp(16px,4vw,22px);overflow-wrap:anywhere}.positive{color:var(--green)}.note{font-size:12px;color:var(--muted);line-height:1.55;margin:13px 0 0}.result{margin-top:14px;padding:15px;border-radius:15px;background:#06170f;border:1px solid var(--border)}.resulttop{display:flex;justify-content:space-between;gap:10px;align-items:center}.result small{color:var(--muted)}.money{font-size:clamp(25px,6vw,34px);font-weight:900;color:var(--green);overflow-wrap:anywhere}
-.list{display:grid;gap:9px}.item{padding:13px;border-radius:14px;background:#071b13;border:1px solid var(--border)}.itemtop{display:flex;justify-content:space-between;gap:10px;align-items:start}.item strong{overflow-wrap:anywhere}.item small{display:block;color:var(--muted);font-size:12px;margin-top:4px;line-height:1.5}.itemactions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.itemactions button{font-size:12px;padding:8px 10px;border-radius:9px}.empty{border:1px dashed var(--border);border-radius:14px;text-align:center;padding:20px;color:var(--muted);font-size:13px}.sectiontitle{margin:22px 0 8px;font-size:11px;letter-spacing:1.5px;color:var(--green);font-weight:850;text-transform:uppercase}
-.view{display:none}.view.active{display:block}.chartbox{border:1px solid var(--border);border-radius:14px;background:#071b13;padding:12px;overflow:hidden}canvas{display:block;width:100%;height:220px}.monthrow{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:11px 2px;border-bottom:1px solid #ffffff12;font-size:13px}.monthrow:last-child{border-bottom:0}.status{font-size:12px;color:var(--muted)}footer{text-align:center;color:#779483;font-size:12px;padding:20px 5px}.hidden{display:none!important}
-@media(min-width:650px){.grid.three{grid-template-columns:repeat(3,1fr)}.metrics{grid-template-columns:repeat(4,1fr)}.card{padding:23px}.hero{padding-top:34px}}@media(max-width:380px){.wrap{width:min(100% - 20px,900px)}.card{padding:14px}.pill{font-size:9px}.grid{gap:8px}}
+:root{
+  --bg:#071b13;
+  --panel:#10271d;
+  --panel2:#0a2017;
+  --green:#54e39a;
+  --text:#f3faf5;
+  --muted:#a2b9aa;
+  --border:#294638;
+  --red:#ff8888;
+  --blue:#82aaff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;
+  background:radial-gradient(ellipse at top,#173e2c 0,#071b13 58%);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(100% - 28px,950px);margin:auto;padding:18px 0 40px}
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:5px 0 18px;border-bottom:1px solid #ffffff17;
+}
+.brand{display:flex;align-items:center;gap:11px;font-size:21px;font-weight:900}
+.brand-mark{
+  display:grid;place-items:center;width:46px;height:46px;
+  border-radius:14px;background:var(--green);color:#082117;
+  font-size:26px;font-weight:950;
+}
+.brand span{color:var(--green)}
+.pill{
+  border:1px solid var(--border);border-radius:999px;
+  padding:8px 11px;color:var(--green);
+  font-size:10px;font-weight:850;letter-spacing:.7px;
+}
+.hero{padding:28px 0 18px}
+.eyebrow{
+  color:var(--green);font-size:12px;font-weight:850;
+  letter-spacing:2px;text-transform:uppercase;
+}
+h1{font-size:clamp(34px,8vw,49px);line-height:1.05;letter-spacing:-1.8px;margin:12px 0}
+h1 span{color:var(--green)}
+.subtitle{color:var(--muted);line-height:1.6;margin:0}
+nav{display:flex;gap:8px;overflow-x:auto;padding:7px 0 15px}
+nav button{
+  white-space:nowrap;border:1px solid var(--border);
+  border-radius:999px;background:var(--panel);
+  color:var(--muted);padding:10px 14px;
+  font-size:12px;font-weight:800;
+}
+nav button.active{background:var(--green);border-color:var(--green);color:#062015}
+.card{
+  background:linear-gradient(145deg,#102b20f2,#0b2118f5);
+  border:1px solid var(--border);border-radius:21px;
+  padding:18px;margin:12px 0;
+  box-shadow:0 14px 35px #00000012;
+}
+.card-head{display:flex;align-items:center;gap:12px;margin-bottom:17px}
+.icon{
+  width:43px;height:43px;display:grid;place-items:center;
+  border-radius:13px;background:#1b4430;color:var(--green);
+  font-size:21px;flex-shrink:0;
+}
+h2{font-size:19px;line-height:1.2;margin:0 0 4px}
+.card-head p{font-size:13px;color:var(--muted);margin:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{min-width:0}
+label{display:block;font-size:12px;color:var(--muted);font-weight:750;margin:0 0 7px}
+input,select{
+  width:100%;min-width:0;border:1px solid var(--border);
+  border-radius:12px;background:#071b13;color:var(--text);
+  padding:13px;outline:none;
+}
+input:focus,select:focus{
+  border-color:var(--green);box-shadow:0 0 0 3px #54e39a18;
+}
+input::placeholder{color:#718c7b}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.btn{
+  border:0;border-radius:12px;padding:12px 15px;
+  font-weight:850;
+}
+.primary{background:var(--green);color:#062015;flex:1}
+.secondary{background:#183a29;color:var(--text);border:1px solid var(--border)}
+.danger{background:#3a2020;color:#ffc1c1;border:1px solid #633737}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.metric{
+  padding:14px;border:1px solid var(--border);
+  background:#071b13a8;border-radius:14px;min-width:0;
+}
+.metric span{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}
+.metric strong{display:block;font-size:clamp(16px,4vw,22px);overflow-wrap:anywhere}
+.positive{color:var(--green)}
+.negative{color:var(--red)}
+.result{
+  margin-top:15px;padding:16px;border-radius:15px;
+  background:#06170f;border:1px solid var(--border);
+}
+.resulttop{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.result small{color:var(--muted)}
+.money{font-size:clamp(27px,6vw,35px);font-weight:950;color:var(--green);overflow-wrap:anywhere}
+.note{font-size:12px;color:var(--muted);line-height:1.6;margin:12px 0 0}
+.list{display:grid;gap:10px}
+.item{
+  padding:14px;border-radius:14px;background:#071b13;
+  border:1px solid var(--border);min-width:0;
+}
+.itemtop{display:flex;justify-content:space-between;gap:10px;align-items:start}
+.item strong{overflow-wrap:anywhere}
+.item small{display:block;color:var(--muted);font-size:12px;margin-top:5px;line-height:1.6}
+.itemactions{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}
+.itemactions button{font-size:12px;padding:8px 11px;border-radius:9px}
+.empty{
+  border:1px dashed var(--border);border-radius:14px;
+  text-align:center;padding:22px;color:var(--muted);font-size:13px;
+}
+.sectiontitle{
+  margin:23px 0 10px;font-size:11px;letter-spacing:1.5px;
+  color:var(--green);font-weight:850;text-transform:uppercase;
+}
+.view{display:none}
+.view.active{display:block}
+.chartbox{
+  border:1px solid var(--border);border-radius:14px;
+  background:#071b13;padding:12px;overflow:hidden;
+}
+canvas{display:block;width:100%;height:220px}
+.monthrow{
+  display:grid;grid-template-columns:1fr auto auto;
+  gap:9px;align-items:center;padding:12px 2px;
+  border-bottom:1px solid #ffffff12;font-size:12px;
+}
+.monthrow:last-child{border-bottom:0}
+.status{font-size:11px;color:var(--muted)}
+footer{text-align:center;color:#779483;font-size:12px;padding:22px 5px}
+.hidden{display:none!important}
+.notice{
+  padding:12px;border:1px solid var(--border);
+  background:#071b13;border-radius:12px;
+  color:var(--muted);font-size:12px;line-height:1.6;
+}
+@media(min-width:650px){
+  .grid.three{grid-template-columns:repeat(3,1fr)}
+  .metrics{grid-template-columns:repeat(4,1fr)}
+  .card{padding:23px}
+  .hero{padding-top:35px}
+}
+@media(max-width:380px){
+  .wrap{width:min(100% - 20px,950px)}
+  .card{padding:14px}
+  .pill{font-size:9px}
+  .grid{gap:8px}
+}
 </style>
 </head>
+
 <body>
 <div class="wrap">
-<header><div class="brand"><div class="brand-mark">L</div><div>lucro<span>fácil</span></div></div><button id="installBtn" class="btn secondary hidden" type="button">Instalar app</button><div id="headerPill" class="pill">CONTROLE DE VENDAS</div></header>
-<section class="hero"><div class="eyebrow">◆ Gestão inteligente</div><h1>Venda melhor.<br><span>Lucre mais.</span></h1><p class="subtitle">Produtos, vendas, relatórios e backup em um só lugar.</p></section>
-<nav aria-label="Navegação principal"><button class="active" data-view="home">Visão geral</button><button data-view="productsView">Produtos</button><button data-view="salesView">Vendas</button><button data-view="reportsView">Relatórios</button><button data-view="backupView">Backup</button></nav>
 
-<section class="view active" id="home">
-<div class="card"><div class="card-head"><div class="icon">▦</div><div><h2>Painel financeiro</h2><p>Resumo dos registros salvos neste aparelho.</p></div></div><div class="metrics"><div class="metric"><span>Faturamento</span><strong id="dashRevenue">R$ 0,00</strong></div><div class="metric"><span>Custos</span><strong id="dashCosts">R$ 0,00</strong></div><div class="metric"><span>Lucro acumulado</span><strong class="positive" id="dashProfit">R$ 0,00</strong></div><div class="metric"><span>Vendas salvas</span><strong id="dashCount">0</strong></div></div><p class="note" id="dashNote">Cadastre um produto ou registre sua primeira venda.</p></div>
-<div class="card"><div class="card-head"><div class="icon">＋</div><div><h2>Calculadora de lucro</h2><p>Calcule antes de registrar uma venda.</p></div></div>
-<div class="grid"><div class="field"><label for="chooseProduct">Produto cadastrado (opcional)</label><select id="chooseProduct"><option value="">Preencher manualmente</option></select></div><div class="field"><label for="quantity">Quantidade</label><input id="quantity" type="number" min="1" step="1" value="1" inputmode="numeric"></div><div class="field"><label for="saleCost">Custo por unidade (R$)</label><input id="saleCost" type="number" min="0" step="0.01" value="0" inputmode="decimal"></div><div class="field"><label for="salePrice">Preço por unidade (R$)</label><input id="salePrice" type="number" min="0" step="0.01" value="0" inputmode="decimal"></div><div class="field"><label for="extraCost">Outros custos totais (R$)</label><input id="extraCost" type="number" min="0" step="0.01" value="0" inputmode="decimal"></div><div class="field"><label for="saleLabel">Descrição (opcional)</label><input id="saleLabel" maxlength="80" placeholder="Ex.: Pedido de hoje"></div></div>
-<div class="result"><div class="resulttop"><small>Lucro estimado</small><small id="marginText">Margem: 0%</small></div><div class="money" id="calcProfit">R$ 0,00</div><p class="note" id="calcDetails">Faturamento: R$ 0,00 · Custos: R$ 0,00</p></div><div class="actions"><button class="btn primary" id="saveSale">Registrar venda</button><button class="btn secondary" id="clearCalc">Limpar</button></div><p class="note">Os valores dependem dos dados informados. Impostos e taxas não preenchidos não entram no cálculo.</p></div>
-<div class="card"><div class="card-head"><div class="icon">↗</div><div><h2>Últimas vendas</h2><p>Seus registros mais recentes.</p></div></div><div class="list" id="recentSales"><div class="empty">Nenhuma venda registrada ainda.</div></div><div class="actions"><button class="btn secondary" data-goto="salesView">Ver todas as vendas</button></div></div>
+<header>
+  <div class="brand">
+    <div class="brand-mark">L</div>
+    <div>lucro<span>fácil</span></div>
+  </div>
+  <div class="pill">GESTÃO DE VENDAS</div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">◆ Gestão inteligente</div>
+  <h1>Venda melhor.<br><span>Lucre mais.</span></h1>
+  <p class="subtitle">Produtos, vendas, relatórios e controle financeiro em um só lugar.</p>
 </section>
 
-<section class="view" id="productsView"><div class="card"><div class="card-head"><div class="icon">▣</div><div><h2>Cadastro de produtos</h2><p>Guarde custos e preços para reutilizar.</p></div></div><div class="grid"><div class="field"><label for="productName">Nome do produto</label><input id="productName" maxlength="60" placeholder="Ex.: Camiseta"></div><div class="field"><label for="productCost">Custo por unidade (R$)</label><input id="productCost" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div><div class="field"><label for="productPrice">Preço de venda (R$)</label><input id="productPrice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div></div><div class="actions"><button class="btn primary" id="saveProduct">Salvar produto</button></div><div class="sectiontitle">Seus produtos</div><div class="list" id="productsList"><div class="empty">Nenhum produto cadastrado.</div></div></div></section>
+<nav aria-label="Navegação principal">
+  <button class="active" data-view="home">Visão geral</button>
+  <button data-view="productsView">Produtos</button>
+  <button data-view="salesView">Vendas</button>
+  <button data-view="reportsView">Relatórios</button>
+  <button data-view="backupView">Backup</button>
+</nav>
 
-<section class="view" id="salesView"><div class="card"><div class="card-head"><div class="icon">↻</div><div><h2>Histórico de vendas</h2><p>Consulte e gerencie os registros.</p></div></div><div class="list" id="salesList"><div class="empty">Nenhuma venda registrada.</div></div><div class="actions"><button class="btn danger" id="clearHistory">Apagar todas as vendas</button></div></div></section>
+<!-- VISÃO GERAL -->
+<section class="view active" id="home">
 
-<section class="view" id="reportsView"><div class="card"><div class="card-head"><div class="icon">▥</div><div><h2>Relatórios mensais</h2><p>Compare faturamento e lucro por mês.</p></div></div><div class="grid"><div class="field"><label for="reportYear">Ano</label><select id="reportYear"></select></div><div class="field"><label for="reportMetric">Gráfico</label><select id="reportMetric"><option value="both">Faturamento e lucro</option><option value="revenue">Faturamento</option><option value="profit">Lucro</option></select></div></div><div class="sectiontitle">Resumo mensal</div><div class="chartbox"><canvas id="reportChart" aria-label="Gráfico mensal"></canvas></div><div id="monthlyRows" style="margin-top:10px"></div><p class="note">Relatórios consideram as vendas registradas neste navegador. São estimativas baseadas nos dados digitados.</p></div></section>
+  <div class="card">
+    <div class="card-head">
+      <div class="icon">▦</div>
+      <div><h2>Painel financeiro</h2><p>Resumo das suas vendas registradas.</p></div>
+    </div>
 
-<section class="view" id="backupView"><div class="card"><div class="card-head"><div class="icon">⇩</div><div><h2>Backup e exportação</h2><p>Guarde uma cópia dos seus dados.</p></div></div><p class="subtitle">O backup inclui produtos e vendas. Salve o arquivo em um local seguro e importe-o quando precisar recuperar seus registros.</p><div class="actions"><button class="btn primary" id="exportBackup">Baixar backup completo (JSON)</button><button class="btn secondary" id="exportCsv">Exportar vendas (CSV)</button></div><div class="sectiontitle">Restaurar backup</div><label for="backupFile">Escolha um arquivo de backup JSON do Lucro Fácil</label><input id="backupFile" type="file" accept=".json,application/json"><div class="actions"><button class="btn secondary" id="importBackup">Importar e substituir dados atuais</button></div><p class="note">Importar um backup substitui os produtos e vendas atuais deste navegador. Faça um backup antes. Não envie arquivos de backup para pessoas desconhecidas, pois podem conter informações comerciais.</p><div class="sectiontitle">Sobre os dados</div><p class="note">Esta versão guarda os dados no armazenamento local do navegador. Eles não são enviados a um servidor e não sincronizam automaticamente entre aparelhos. Limpar os dados do navegador pode apagá-los.</p></div>
-<div class="card"><div class="card-head"><div class="icon">✦</div><div><h2>Próximos passos para crescer</h2><p>Prepare o projeto antes de ativar monetização.</p></div></div><div class="item"><strong>Validar com usuários</strong><small>Peça a algumas pessoas que vendem produtos para testar o fluxo e apontar o que falta.</small></div><div class="item" style="margin-top:9px"><strong>Monetização responsável</strong><small>Anúncios ou recursos premium podem ser avaliados depois. A receita não é garantida e plataformas de anúncios têm requisitos de elegibilidade, privacidade e conteúdo.</small></div></div></section>
-<footer>Lucro Fácil · Ferramenta de organização financeira. Faça backups regularmente.</footer>
+    <div class="metrics">
+      <div class="metric"><span>Faturamento</span><strong id="dashRevenue">R$ 0,00</strong></div>
+      <div class="metric"><span>Custos</span><strong id="dashCosts">R$ 0,00</strong></div>
+      <div class="metric"><span>Lucro acumulado</span><strong class="positive" id="dashProfit">R$ 0,00</strong></div>
+      <div class="metric"><span>Vendas salvas</span><strong id="dashCount">0</strong></div>
+    </div>
+    <p class="note" id="dashNote">Registre sua primeira venda para começar.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="icon">＋</div>
+      <div><h2>Calculadora de lucro</h2><p>Calcule antes de registrar uma venda.</p></div>
+    </div>
+
+    <div class="grid">
+      <div class="field">
+        <label for="chooseProduct">Produto cadastrado</label>
+        <select id="chooseProduct">
+          <option value="">Preencher manualmente</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="quantity">Quantidade</label>
+        <input id="quantity" type="number" min="1" step="1" value="1">
+      </div>
+      <div class="field">
+        <label for="saleCost">Custo por unidade (R$)</label>
+        <input id="saleCost" type="number" min="0" step="0.01" value="0">
+      </div>
+      <div class="field">
+        <label for="salePrice">Preço por unidade (R$)</label>
+        <input id="salePrice" type="number" min="0" step="0.01" value="0">
+      </div>
+      <div class="field">
+        <label for="extraCost">Outros custos totais (R$)</label>
+        <input id="extraCost" type="number" min="0" step="0.01" value="0">
+      </div>
+      <div class="field">
+        <label for="saleLabel">Descrição (opcional)</label>
+        <input id="saleLabel" maxlength="80" placeholder="Ex.: Pedido de hoje">
+      </div>
+    </div>
+
+    <div class="result">
+      <div class="resulttop">
+        <small>Lucro estimado</small>
+        <small id="marginText">Margem: 0%</small>
+      </div>
+      <div class="money" id="calcProfit">R$ 0,00</div>
+      <p class="note" id="calcDetails">Faturamento: R$ 0,00 · Custos: R$ 0,00</p>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" id="saveSale">Registrar venda</button>
+      <button class="btn secondary" id="clearCalc">Limpar</button>
+    </div>
+    <p class="note">Os cálculos consideram os valores informados. Impostos e taxas precisam ser incluídos nos outros custos.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="icon">↗</div>
+      <div><h2>Últimas vendas</h2><p>Seus registros mais recentes.</p></div>
+    </div>
+    <div class="list" id="recentSales"></div>
+    <div class="actions">
+      <button class="btn secondary" data-goto="salesView">Ver todas as vendas</button>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUTOS -->
+<section class="view" id="productsView">
+  <div class="card">
+    <div class="card-head">
+      <div class="icon">▣</div>
+      <div><h2>Cadastro de produtos</h2><p>Cadastre seus produtos e reutilize os valores.</p></div>
+    </div>
+
+    <input id="editingProductId" type="hidden">
+
+    <div class="grid">
+      <div class="field">
+        <label for="productName">Nome do produto</label>
+        <input id="productName" maxlength="60" placeholder="Ex.: Camiseta">
+      </div>
+      <div class="field">
+        <label for="productCost">Custo por unidade (R$)</label>
+        <input id="productCost" type="number" min="0" step="0.01" placeholder="0,00">
+      </div>
+      <div class="field">
+        <label for="productPrice">Preço de venda (R$)</label>
+        <input id="productPrice" type="number" min="0" step="0.01" placeholder="0,00">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" id="saveProduct">Salvar produto</button>
+      <button class="btn secondary hidden" id="cancelEdit">Cancelar edição</button>
+    </div>
+
+    <div class="sectiontitle">Seus produtos</div>
+    <div class="list" id="productsList"></div>
+  </div>
+</section>
+
+<!-- VENDAS -->
+<section class="view" id="salesView">
+  <div class="card">
+    <div class="card-head">
+      <div class="icon">↻</div>
+      <div><h2>Histórico de vendas</h2><p>Consulte e gerencie seus registros.</p></div>
+    </div>
+    <div class="list" id="salesList"></div>
+    <div class="actions">
+      <button class="btn danger" id="clearHistory">Apagar todas as vendas</button>
+    </div>
+  </div>
+</section>
+
+<!-- RELATÓRIOS -->
+<section class="view" id="reportsView">
+  <div class="card">
+    <div class="card-head">
+      <div class="icon">▥</div>
+      <div><h2>Relatórios mensais</h2><p>Acompanhe faturamento, custos e lucro.</p></div>
+    </div>
+
+    <div class="grid">
+      <div class="field">
+        <label for="reportYear">Ano</label>
+        <select id="reportYear"></select>
+      </div>
+      <div class="field">
+        <label for="reportMetric">Gráfico</label>
+        <select id="reportMetric">
+          <option value="both">Faturamento e lucro</option>
+          <option value="revenue">Faturamento</option>
+          <option value="profit">Lucro</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="sectiontitle">Resumo mensal</div>
+    <div class="chartbox"><canvas id="reportChart" aria-label="Gráfico mensal"></canvas></div>
+    <div id="monthlyRows" style="margin-top:10px"></div>
+    <p class="note">Os relatórios são estimativas baseadas nas vendas registradas.</p>
+  </div>
+</section>
+
+<!-- BACKUP -->
+<section class="view" id="backupView">
+  <div class="card">
+    <div class="card-head">
+      <div class="icon">⇩</div>
+      <div><h2>Backup e exportação</h2><p>Proteja seus registros.</p></div>
+    </div>
+
+    <p class="subtitle">O backup inclui seus produtos e vendas. Guarde o arquivo em um local seguro.</p>
+
+    <div class="actions">
+      <button class="btn primary" id="exportBackup">Baixar backup completo</button>
+      <button class="btn secondary" id="exportCsv">Exportar vendas CSV</button>
+    </div>
+
+    <div class="sectiontitle">Restaurar backup</div>
+    <label for="backupFile">Escolha um arquivo JSON do Lucro Fácil</label>
+    <input id="backupFile" type="file" accept=".json,application/json">
+
+    <div class="actions">
+      <button class="btn secondary" id="importBackup">Importar backup</button>
+    </div>
+
+    <p class="note">A importação substitui os dados atuais. Faça um backup antes de restaurar.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="icon">✦</div>
+      <div><h2>Sobre o Lucro Fácil</h2><p>Seu controle financeiro simplificado.</p></div>
+    </div>
+    <div class="notice">
+      Esta versão armazena os dados neste navegador. Eles não são enviados a um servidor e não sincronizam automaticamente entre aparelhos.
+    </div>
+    <p class="note">Faça backups regularmente. Limpar os dados do navegador ou trocar de aparelho pode fazer você perder os registros que não foram exportados.</p>
+  </div>
+</section>
+
+<footer>Lucro Fácil · Gestão inteligente de vendas.</footer>
 </div>
+
 <script>
-const $=id=>document.getElementById(id);
-const money=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-const num=id=>Math.max(0,Number($(id).value)||0);
-const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const read=(key,fallback)=>{try{const x=JSON.parse(localStorage.getItem(key));return Array.isArray(x)?x:fallback}catch{return fallback}};
-let products=read('lucroFacilProdutosV2',[]),sales=read('lucroFacilVendasV2',[]);
-function save(){try{localStorage.setItem('lucroFacilProdutosV2',JSON.stringify(products));localStorage.setItem('lucroFacilVendasV2',JSON.stringify(sales));return true}catch(e){alert('Não foi possível salvar. Exporte um backup e confira o espaço disponível no navegador.');return false}}
-function calc(){const qty=Math.max(1,Math.floor(num('quantity'))),cost=num('saleCost'),price=num('salePrice'),extra=num('extraCost'),revenue=qty*price,costs=qty*cost+extra,profit=revenue-costs;return{qty,cost,price,extra,revenue,costs,profit,margin:revenue?profit/revenue*100:0,label:$('saleLabel').value.trim()}}
-function updateCalc(){const c=calc();$('calcProfit').textContent=money(c.profit);$('calcProfit').style.color=c.profit<0?'var(--red)':'var(--green)';$('marginText').textContent='Margem: '+c.margin.toLocaleString('pt-BR',{maximumFractionDigits:1})+'%';$('calcDetails').textContent='Faturamento: '+money(c.revenue)+' · Custos: '+money(c.costs)}
-function renderProducts(){$('productsList').innerHTML=products.length?products.map(p=>`<div class="item"><div class="itemtop"><div><strong>${safe(p.name)}</strong><small>Custo: ${money(p.cost)} · Venda: ${money(p.price)} · Lucro/un.: ${money(p.price-p.cost)}</small></div></div><div class="itemactions"><button class="btn secondary" data-use="${safe(p.id)}">Usar na calculadora</button><button class="btn danger" data-del-product="${safe(p.id)}">Excluir</button></div></div>`).join(''):'<div class="empty">Nenhum produto cadastrado.</div>';$('chooseProduct').innerHTML='<option value="">Preencher manualmente</option>'+products.map(p=>`<option value="${safe(p.id)}">${safe(p.name)}</option>`).join('')}
-function saleHTML(s,withDelete=true){return `<div class="item"><div class="itemtop"><div><strong>${safe(s.label||'Venda')}</strong><small>${safe(s.date||'Data não informada')} · ${Number(s.qty)||1} unidade(s)<br>Faturamento: ${money(s.revenue)} · Custos: ${money(s.costs)}</small></div><strong style="color:${s.profit<0?'var(--red)':'var(--green)'}">${money(s.profit)}</strong></div>${withDelete?`<div class="itemactions"><button class="btn danger" data-del-sale="${safe(s.id)}">Excluir registro</button></div>`:''}</div>`}
-function renderSales(){$('salesList').innerHTML=sales.length?sales.slice().reverse().map(s=>saleHTML(s)).join(''):'<div class="empty">Nenhuma venda registrada.</div>';$('recentSales').innerHTML=sales.length?sales.slice(-3).reverse().map(s=>saleHTML(s,false)).join(''):'<div class="empty">Nenhuma venda registrada ainda.</div>'}
-function renderDash(){const revenue=sales.reduce((a,s)=>a+(Number(s.revenue)||0),0),costs=sales.reduce((a,s)=>a+(Number(s.costs)||0),0),profit=sales.reduce((a,s)=>a+(Number(s.profit)||0),0);$('dashRevenue').textContent=money(revenue);$('dashCosts').textContent=money(costs);$('dashProfit').textContent=money(profit);$('dashProfit').style.color=profit<0?'var(--red)':'var(--green)';$('dashCount').textContent=sales.length;$('dashNote').textContent=sales.length?'Margem acumulada: '+(revenue?(profit/revenue*100).toLocaleString('pt-BR',{maximumFractionDigits:1})+'%':'—')+'.':'Cadastre um produto ou registre sua primeira venda.'}
-function renderReports(){const years=[new Date().getFullYear(),...sales.map(s=>Number(String(s.iso||'').slice(0,4))).filter(Boolean)];const yearSelect=$('reportYear'),old=yearSelect.value;const unique=[...new Set(years)].sort((a,b)=>b-a);yearSelect.innerHTML=unique.map(y=>`<option value="${y}">${y}</option>`).join('');if(unique.includes(Number(old)))yearSelect.value=old;const year=Number(yearSelect.value)||new Date().getFullYear();const months=Array.from({length:12},(_,i)=>({month:i,revenue:0,costs:0,profit:0,count:0}));sales.forEach(s=>{const d=s.iso?new Date(s.iso+'T12:00:00'):null;if(!d||d.getFullYear()!==year)return;const m=months[d.getMonth()];m.revenue+=Number(s.revenue)||0;m.costs+=Number(s.costs)||0;m.profit+=Number(s.profit)||0;m.count++});drawChart(months);$('monthlyRows').innerHTML=months.map(m=>`<div class="monthrow"><span>${new Date(year,m.month,1).toLocaleDateString('pt-BR',{month:'long'})} <span class="status">(${m.count})</span></span><span>${money(m.revenue)}</span><strong style="color:${m.profit<0?'var(--red)':'var(--green)'}">${money(m.profit)}</strong></div>`).join('')}
-function drawChart(months){const canvas=$('reportChart'),ctx=canvas.getContext('2d'),w=canvas.clientWidth||300,h=220,dpr=window.devicePixelRatio||1;canvas.width=w*dpr;canvas.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const metric=$('reportMetric').value;const series=metric==='revenue'?['revenue']:metric==='profit'?['profit']:['revenue','profit'];const vals=months.flatMap(m=>series.map(k=>Math.abs(m[k])));const max=Math.max(1,...vals);const left=8,right=8,top=14,bottom=28,plotH=h-top-bottom,groupW=(w-left-right)/12;ctx.font='10px system-ui';ctx.textAlign='center';for(let j=0;j<4;j++){const y=top+plotH*j/3;ctx.strokeStyle='#294638';ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(w-right,y);ctx.stroke()}months.forEach((m,i)=>{const keys=series;const barW=Math.max(2,(groupW-7)/keys.length);keys.forEach((k,ki)=>{const v=m[k];const bh=Math.abs(v)/max*(plotH-8);const x=left+i*groupW+3+ki*barW;ctx.fillStyle=k==='revenue'?'#54e39a':(v<0?'#ff8888':'#7aa8ff');ctx.fillRect(x,top+plotH-bh,Math.max(2,barW-2),bh)});ctx.fillStyle='#a2b9aa';ctx.fillText(['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][i],left+i*groupW+groupW/2,h-9)})}
-function render(){renderProducts();renderSales();renderDash();updateCalc();renderReports()}
-function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));if(id==='reportsView')renderReports();window.scrollTo({top:0,behavior:'smooth'})}
-document.querySelectorAll('nav [data-view]').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.goto)));
-$('saveProduct').addEventListener('click',()=>{const name=$('productName').value.trim();if(!name||!$('
+'use strict';
+
+/* CONFIGURAÇÃO E ARMAZENAMENTO */
+
+const $ = id => document.getElementById(id);
+const KEYS = {
+  products:'lucroFacilProdutosV2',
+  sales:'lucroFacilVendasV2'
+};
+
+const money = value => Number(value || 0).toLocaleString('pt-BR',{
+  style:'currency',currency:'BRL'
+});
+
+const number = id => {
+  const value = Number($(id).value);
+  return Number.isFinite(value) ? value : 0;
+};
+
+const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g,char=>({
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;',
+  "'":'&#39;'
+}[char]));
+
+function readData(key){
+  try{
+    const value = JSON.parse(localStorage.getItem(key));
+    return Array.isArray(value) ? value : [];
+  }catch{
+    return [];
+  }
+}
+
+let products = readData(KEYS.products);
+let sales = readData(KEYS.sales);
+
+function saveData(){
+  try{
+    localStorage.setItem(KEYS.products,JSON.stringify(products));
+    localStorage.setItem(KEYS.sales,JSON.stringify(sales));
+    return true;
+  }catch(error){
+    alert('Não foi possível salvar. Faça um backup e confira o espaço disponível no navegador.');
+    return false;
+  }
+}
+
+function newId(){
+  return Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);
+}
+
+function validMoney(value){
+  return Number.isFinite(value) && value >= 0;
+}
+
+/* CALCULADORA */
+
+function calculate(){
+  const qty = Math.floor(number('quantity'));
+  const cost = number('saleCost');
+  const price = number('salePrice');
+  const extra = number('extraCost');
+
+  const revenue = qty * price;
+  const costs = qty * cost + extra;
+  const profit = revenue - costs;
+
+  return {
+    qty,cost,price,extra,revenue,costs,profit,
+    margin:revenue ? profit/revenue*100 : 0,
+    label:$('saleLabel').value.trim()
+  };
+}
+
+function updateCalculator(){
+  const c = calculate();
+
+  $('calcProfit').textContent = money(c.profit);
+  $('calcProfit').style.color = c.profit < 0
+    ? 'var(--red)' : 'var(--green)';
+
+  $('marginText').textContent =
+    'Margem: '+c.margin.toLocaleString('pt-BR',{
+      maximumFractionDigits:1
+    })+'%';
+
+  $('calcDetails').textContent =
+    'Faturamento: '+money(c.revenue)+
+    ' · Custos: '+money(c.costs);
+}
+
+function clearCalculator(){
+  $('chooseProduct').value = '';
+  $('quantity').value = 1;
+  $('saleCost').value = 0;
+  $('salePrice').value = 0;
+  $('extraCost').value = 0;
+  $('saleLabel').value = '';
+  updateCalculator();
+}
+
+function registerSale(){
+  const c = calculate();
+
+  if(!Number.isInteger(c.qty) || c.qty < 1){
+    alert('Informe uma quantidade válida.');
+    return;
+  }
+
+  if(!validMoney(c.cost) || !validMoney(c.price) || !validMoney(c.extra)){
+    alert('Os valores não podem ser negativos.');
+    return;
+  }
+
+  if(c.price <= 0){
+    alert('Informe um preço de venda maior que zero.');
+    return;
+  }
+
+  const sale = {
+    id:newId(),
+    label:c.label || 'Venda',
+    qty:c.qty,
+    cost:c.cost,
+    price:c.price,
+    extra:c.extra,
+    revenue:c.revenue,
+    costs:c.costs,
+    profit:c.profit,
+    date:new Date().toLocaleString('pt-BR'),
+    iso:new Date().toISOString().slice(0,10)
+  };
+
+  sales.push(sale);
+
+  if(!saveData()){
+    sales.pop();
+    return;
+  }
+
+  renderAll();
+  clearCalculator();
+  alert('Venda registrada com sucesso!');
+}
+
+/* PRODUTOS */
+
+function resetProductForm(){
+  $('editingProductId').value = '';
+  $('productName').value = '';
+  $('productCost').value = '';
+  $('productPrice').value = '';
+  $('saveProduct').textContent = 'Salvar produto';
+  $('cancelEdit').classList.add('hidden');
+}
+
+function saveProduct(){
+  const name = $('productName').value.trim();
+  const cost = Number($('productCost').value);
+  const price = Number($('productPrice').value);
+  const editingId = $('editingProductId').value;
+
+  if(!name){
+    alert('Digite o nome do produto.');
+    return;
+  }
+
+  if(!validMoney(cost) || !validMoney(price) || $('productCost').value === '' || $('productPrice').value === ''){
+    alert('Informe valores válidos para custo e preço.');
+    return;
+  }
+
+  if(price <= 0){
+    alert('O preço de venda deve ser maior que zero.');
+    return;
+  }
+
+  if(editingId){
+    const index = products.findIndex(p=>p.id===editingId);
+    if(index < 0) return;
+
+    const old = products[index];
+    products[index] = {...old,name,cost,price};
+  }else{
+    products.push({id:newId(),name,cost,price});
+  }
+
+  if(!saveData()) return;
+
+  resetProductForm();
+  renderAll();
+  alert('Produto salvo com sucesso!');
+}
+
+function editProduct(id){
+  const p = products.find(item=>item.id===id);
+  if(!p) return;
+
+  $('editingProductId').value = p.id;
+  $('productName').value = p.name;
+  $('productCost').value = p.cost;
+  $('productPrice').value = p.price;
+  $('saveProduct').textContent = 'Atualizar produto';
+  $('cancelEdit').classList.remove('hidden');
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function deleteProduct(id){
+  const p = products.find(item=>item.id===id);
+  if(!p) return;
+
+  if(!confirm('Excluir o produto "'+p.name+'"?')) return;
+
+  products = products.filter(item=>item.id!==id);
+
+  if(!saveData()) return;
+
+  if($('editingProductId').value===id) resetProductForm();
+
+  renderAll();
+}
+
+function useProduct(id){
+  const p = products.find(item=>item.id===id);
+  if(!p) return;
+
+  $('chooseProduct').value = id;
+  $('saleCost').value = p.cost;
+  $('salePrice').value = p.price;
+
+  updateCalculator();
+  showView('home');
+}
+
+/* RENDERIZAÇÃO */
+
+function renderProducts(){
+  $('productsList').innerHTML = products.length
+    ? products.map(p=>`
+      <div class="item">
+        <div class="itemtop">
+          <div>
+            <strong>${escapeHTML(p.name)}</strong>
+            <small>
+              Custo: ${money(p.cost)} · Venda: ${money(p.price)}
+              <br>Lucro por unidade: ${money(p.price-p.cost)}
+            </small>
+          </div>
+        </div>
+        <div class="itemactions">
+          <button class="btn secondary" data-use="${escapeHTML(p.id)}">Usar</button>
+          <button class="btn secondary" data-edit-product="${escapeHTML(p.id)}">Editar</butt
